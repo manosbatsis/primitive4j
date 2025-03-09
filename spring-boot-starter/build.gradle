@@ -1,0 +1,9 @@
+
+
+dependencies {
+	api(project(":jvm-typed-id-spring-boot-autoconfigure"))
+	api(project(":jvm-typed-id-core"))
+	api(project(":jvm-typed-id-spring"))
+	api(project(":jvm-typed-id-jpa"))
+	api(project(":jvm-typed-id-jackson"))
+}
