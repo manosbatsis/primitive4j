@@ -1,7 +1,0 @@
-
-
-dependencies {
-	api(project(":jvm-typed-id-core"))
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-}

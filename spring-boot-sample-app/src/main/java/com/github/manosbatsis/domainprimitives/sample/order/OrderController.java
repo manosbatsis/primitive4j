@@ -1,0 +1,32 @@
+package com.github.manosbatsis.domainprimitives.sample.order;
+
+import jakarta.validation.Valid;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("api/orders")
+public class OrderController {
+
+    private final OrderRepository repository;
+
+    @GetMapping("{id}")
+    ResponseEntity<Order> findById(@PathVariable OrderId id) {
+        return ResponseEntity.of(repository.findById(id));
+    }
+
+    @PostMapping
+    ResponseEntity<Order> save(@Valid @RequestBody Order entity) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(entity));
+    }
+
+    @PutMapping("{id}")
+    ResponseEntity<Order> update(@Valid @RequestBody Order entity, @PathVariable OrderId id) {
+        return ResponseEntity.ok(repository.save(entity));
+    }
+}

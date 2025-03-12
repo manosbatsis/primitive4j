@@ -1,6 +1,6 @@
 
 
 dependencies {
-	api(project(":jvm-typed-id-core"))
+	api(project(":domain-primitives-core"))
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }

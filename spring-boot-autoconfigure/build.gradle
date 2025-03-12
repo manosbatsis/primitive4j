@@ -1,8 +1,8 @@
 
 
 dependencies {
-	api(project(":jvm-typed-id-core"))
-	api(project(":jvm-typed-id-spring"))
+	api(project(":domain-primitives-core"))
+	api(project(":domain-primitives-spring"))
 	implementation 'org.springframework.boot:spring-boot-autoconfigure'
 	implementation 'org.springframework.boot:spring-boot-configuration-processor'
 
