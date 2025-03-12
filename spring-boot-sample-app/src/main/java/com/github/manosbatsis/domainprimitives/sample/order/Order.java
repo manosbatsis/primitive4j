@@ -2,6 +2,7 @@ package com.github.manosbatsis.domainprimitives.sample.order;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.Valid;
 
 import lombok.*;
 
@@ -11,6 +12,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-    @Id private OrderId id;
+    @Id @Valid private OrderId id;
     private String comments;
 }

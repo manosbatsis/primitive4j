@@ -1,6 +1,7 @@
 package com.github.manosbatsis.domainprimitives.sample.customer;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 
 import lombok.*;
 
@@ -15,7 +16,7 @@ public class Customer {
 
     @Id private UUID id;
 
-    private CustomerRef ref;
+    @Valid private CustomerRef ref;
 
     private String name;
 }

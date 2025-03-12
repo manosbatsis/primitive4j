@@ -21,7 +21,8 @@ public record OrderId(UUID value) implements DomainPrimitive<Order, UUID> {
 
     /** A JPA converter for this dedicated DomainPrimitive */
     @Converter(autoApply = true)
-    static class OrderIdAttributeConverter extends DomainPrimitiveAttributeConverter<OrderId, UUID> {
+    static class OrderIdAttributeConverter
+            extends DomainPrimitiveAttributeConverter<OrderId, UUID> {
         public OrderIdAttributeConverter() {
             super(OrderId.class, UUID.class);
         }
