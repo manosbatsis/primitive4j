@@ -8,6 +8,6 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = TypedPropertyAutoConfiguration.class)
 public class SpringContextTest {
 
-  @Test
-  public void whenSpringContextIsBootstrapped_thenNoExceptions() {}
+    @Test
+    public void whenSpringContextIsBootstrapped_thenNoExceptions() {}
 }

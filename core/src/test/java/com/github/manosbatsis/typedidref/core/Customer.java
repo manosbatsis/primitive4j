@@ -7,12 +7,12 @@ import lombok.Builder;
 @AllArgsConstructor
 public class Customer {
 
-  static class CustomerId extends AbstractTypedProperty<Customer, String> {
-    public CustomerId(String value) {
-      super(Customer.class, value);
+    static class CustomerId extends AbstractTypedProperty<Customer, String> {
+        public CustomerId(String value) {
+            super(Customer.class, value);
+        }
     }
-  }
 
-  private CustomerId id;
-  private String name;
+    private CustomerId id;
+    private String name;
 }

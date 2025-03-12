@@ -1,5 +1,7 @@
 package com.github.manosbatsis.typedidref.core;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public abstract class AbstractTypedProperty<T, ID> implements TypedProperty<T, ID> {
-  private final Class<T> containerType;
-  private final ID value;
+    private final Class<T> containerType;
+    @JsonValue private final ID value;
 }

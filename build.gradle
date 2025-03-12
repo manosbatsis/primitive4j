@@ -34,7 +34,13 @@ subprojects() {
 
 	spotless {
 		java {
-			googleJavaFormat('1.17.0')
+			removeUnusedImports()
+			cleanthat().sourceCompatibility(java.sourceCompatibility.toString())
+			googleJavaFormat('1.25.2')
+					.aosp()
+					.reflowLongStrings()
+					.formatJavadoc(false)
+					.reorderImports(true)
 		}
 	}
 

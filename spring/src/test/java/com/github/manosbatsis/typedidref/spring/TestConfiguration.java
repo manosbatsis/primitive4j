@@ -6,13 +6,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class TestConfiguration {
 
-  @Bean
-  FromTypedPropertyConverter typedPropertyConverter() {
-    return new FromTypedPropertyConverter();
-  }
+    @Bean
+    FromTypedPropertyConverter typedPropertyConverter() {
+        return new FromTypedPropertyConverter();
+    }
 
-  @Bean
-  ToTypedPropertyConverter toTypedPropertyConverter() {
-    return new ToTypedPropertyConverter();
-  }
+    @Bean
+    ToTypedPropertyConverter toTypedPropertyConverter() {
+        return new ToTypedPropertyConverter();
+    }
 }

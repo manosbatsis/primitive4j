@@ -5,5 +5,5 @@ dependencies {
 	api(project(":jvm-typed-id-core"))
 	api(project(":jvm-typed-id-spring"))
 	api(project(":jvm-typed-id-jpa"))
-	api(project(":jvm-typed-id-jackson"))
+	api("com.fasterxml.jackson.core:jackson-annotations")
 }
