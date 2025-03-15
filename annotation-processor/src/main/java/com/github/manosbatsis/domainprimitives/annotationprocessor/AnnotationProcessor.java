@@ -40,16 +40,16 @@ public final class AnnotationProcessor extends AbstractProcessor {
         Set<? extends Element> elements =
                 roundEnv.getElementsAnnotatedWith(GenerateDomainPrimitive.class);
         for (var element : elements) {
-            var annotatedTypeElement = (TypeElement) element;
-            var annotation = annotatedTypeElement.getAnnotation(GenerateDomainPrimitive.class);
-            var generatedClassSimpleName = getGeneratedClassName(annotation);
+            TypeElement annotatedTypeElement = (TypeElement) element;
+            GenerateDomainPrimitive annotation = annotatedTypeElement.getAnnotation(GenerateDomainPrimitive.class);
+            String generatedClassSimpleName = getGeneratedClassName(annotation);
             if (isInvalidGeneratedClassName(
                     generatedClassSimpleName, annotatedTypeElement, messager)) {
                 return true;
             }
 
-            var valueType = getValueType(annotation);
-            var valueTypeSimpleName = valueType.substring(valueType.lastIndexOf('.') + 1);
+            String valueType = getValueType(annotation);
+            String valueTypeSimpleName = valueType.substring(valueType.lastIndexOf('.') + 1);
 
             var packageName = getGeneratedPackageName(annotatedTypeElement, messager);
             var packageDecl = packageName == null ? "" : "package " + packageName + ";\n";
