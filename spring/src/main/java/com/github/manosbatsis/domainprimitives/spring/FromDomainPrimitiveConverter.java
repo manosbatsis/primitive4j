@@ -32,6 +32,6 @@ public class FromDomainPrimitiveConverter implements GenericConverter, Condition
     @Nullable
     public Object convert(
             @Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
-        return Objects.nonNull(source) ? ((DomainPrimitive<?, ?>) source).value() : null;
+        return Objects.nonNull(source) ? ((DomainPrimitive<?>) source).value() : null;
     }
 }

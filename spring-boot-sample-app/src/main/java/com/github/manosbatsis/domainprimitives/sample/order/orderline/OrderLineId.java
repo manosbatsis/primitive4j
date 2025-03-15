@@ -1,4 +1,4 @@
-package com.github.manosbatsis.domainprimitives.sample.order;
+package com.github.manosbatsis.domainprimitives.sample.order.orderline;
 
 import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
 import com.github.manosbatsis.domainprimitives.jpa.DomainPrimitiveAttributeConverter;
@@ -11,18 +11,18 @@ import java.util.UUID;
 
 /** A primary key type dedicated to Order entities. */
 @Schema(implementation = UUID.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc.
-public record OrderId(UUID value) implements DomainPrimitive<UUID> {
+public record OrderLineId(UUID value) implements DomainPrimitive<UUID> {
 
-    public OrderId(@org.hibernate.validator.constraints.UUID String value) {
+    public OrderLineId(@org.hibernate.validator.constraints.UUID String value) {
         this(UUID.fromString(value));
     }
 
-    /** A JPA converter for {@link OrderId} */
+    /** A JPA converter for this dedicated DomainPrimitive */
     @Converter(autoApply = true)
     static class OrderIdAttributeConverter
-            extends DomainPrimitiveAttributeConverter<OrderId, UUID> {
+            extends DomainPrimitiveAttributeConverter<OrderLineId, UUID> {
         public OrderIdAttributeConverter() {
-            super(OrderId.class, UUID.class);
+            super(OrderLineId.class, UUID.class);
         }
     }
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 @RequiredArgsConstructor
 public abstract class DomainPrimitiveAttributeConverter<
-                T extends DomainPrimitive<?, I>, I extends Serializable>
+                T extends DomainPrimitive<I>, I extends Serializable>
         implements AttributeConverter<T, I> {
 
     private final Class<T> attributeType;

@@ -8,14 +8,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import jakarta.persistence.Converter;
 
-/**
- * A business key type dedicated to Customer entities.
- */
+/** A business key type dedicated to Customer entities. */
 @Schema(implementation = String.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc.
-public class CustomerRef extends AbstractDomainPrimitive<Customer, String> {
+public class CustomerRef extends AbstractDomainPrimitive<String> {
 
     /**
      * Annotated with @JsonCreator and used by Jackson when deserializing
+     *
      * @param value the internal, wrapped value
      * @return a new instance wrapping the given value
      */
@@ -34,7 +33,9 @@ public class CustomerRef extends AbstractDomainPrimitive<Customer, String> {
         super(value);
     }
 
-    /** A JPA converter for this dedicated DomainPrimitive */
+    /**
+     * A JPA converter for {@link CustomerRef}
+     */
     @Converter(autoApply = true)
     static class CustomerRefAttributeConverter
             extends DomainPrimitiveAttributeConverter<CustomerRef, String> {

@@ -1,0 +1,8 @@
+
+
+dependencies {
+	api(project(":domain-primitives-core"))
+	api(project(":domain-primitives-spring"))
+	api(project(":domain-primitives-jpa"))
+	api("com.fasterxml.jackson.core:jackson-annotations")
+}

@@ -7,7 +7,7 @@ import lombok.Builder;
 @AllArgsConstructor
 public class Customer {
 
-    static class CustomerId extends AbstractDomainPrimitive<Customer, String> {
+    static class CustomerId extends AbstractDomainPrimitive<String> {
         public CustomerId(String value) {
             super(value);
         }
