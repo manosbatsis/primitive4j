@@ -40,8 +40,7 @@ public final class AnnotationProcessor extends AbstractProcessor {
         Set<? extends Element> elements =
                 roundEnv.getElementsAnnotatedWith(GenerateDomainPrimitive.class);
         for (var element : elements) {
-
-
+            var annotatedTypeElement = (TypeElement) element;
             var annotation = annotatedTypeElement.getAnnotation(GenerateDomainPrimitive.class);
             var generatedClassSimpleName = getGeneratedClassName(annotation);
             if (isInvalidGeneratedClassName(
@@ -225,9 +224,7 @@ public final class AnnotationProcessor extends AbstractProcessor {
     }
 
     private static ImportsHelper getGeneratedImports(
-            String valueType,
-            String extendClass,
-            boolean extendClassIsInterface) {
+            String valueType, String extendClass, boolean extendClassIsInterface) {
         ImportsHelper importsHelper =
                 new ImportsHelper()
                         .addImport(DomainPrimitive.class.getCanonicalName())
@@ -288,8 +285,7 @@ public final class AnnotationProcessor extends AbstractProcessor {
         return packageName;
     }
 
-    private String getGeneratedClassName(
-            GenerateDomainPrimitive annotation) {
+    private String getGeneratedClassName(GenerateDomainPrimitive annotation) {
         var generatedClassName = annotation.name();
 
         if (generatedClassName.contains(".")) {
