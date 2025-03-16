@@ -9,6 +9,7 @@ include("annotation-processor",
         "spring",
         "spring-boot-autoconfigure",
         "spring-boot-starter",
-        "spring-boot-sample-app")
+        "spring-boot-sample-app",
+        "test-common")
 
 prefix('domain-primitives')

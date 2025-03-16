@@ -34,13 +34,17 @@ subprojects() {
 
 	spotless {
 		java {
+			target fileTree('.') {
+				include '**/*.java'
+				exclude '**/build/**', '**/build-*/**'
+			}
+			licenseHeaderFile("$rootDir/etc/licenseHeaderFile.txt")
+			toggleOffOn()
+			palantirJavaFormat()
+			importOrder()
 			removeUnusedImports()
-			cleanthat().sourceCompatibility(java.sourceCompatibility.toString())
-			googleJavaFormat('1.25.2')
-					.aosp()
-					.reflowLongStrings()
-					.formatJavadoc(false)
-					.reorderImports(true)
+			trimTrailingWhitespace()
+			endWithNewline()
 		}
 	}
 
