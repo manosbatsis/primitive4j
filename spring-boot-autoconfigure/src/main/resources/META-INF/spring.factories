@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.baeldung.greeter.autoconfigure.GreeterAutoConfiguration
+com.github.manosbatsis.domainprimitives.spring.autoconfigure.DomainPrimitivesAutoConfiguration

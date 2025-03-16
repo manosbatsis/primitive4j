@@ -24,10 +24,6 @@ import java.util.UUID;
 @Schema(implementation = UUID.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc.
 public record OrderId(UUID value) implements DomainPrimitive<UUID> {
 
-    public OrderId(@org.hibernate.validator.constraints.UUID String value) {
-        this(UUID.fromString(value));
-    }
-
     /** A JPA converter for {@link OrderId} */
     @Converter(autoApply = true)
     static class OrderIdAttributeConverter extends DomainPrimitiveAttributeConverter<OrderId, UUID> {

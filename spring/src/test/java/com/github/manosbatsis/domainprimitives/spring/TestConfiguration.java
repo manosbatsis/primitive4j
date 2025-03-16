@@ -30,8 +30,8 @@ public class TestConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new FromDomainPrimitiveConverter());
-        registry.addConverter(new ToDomainPrimitiveConverter());
+        registry.addConverter(new FromDomainPrimitiveGenericConverter());
+        registry.addConverter(new ToDomainPrimitiveGenericConverter());
         registry.addConverterFactory(new StringToDomainPrimitiveConverterFactory<>(conversionService));
     }
 }

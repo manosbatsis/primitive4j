@@ -21,7 +21,6 @@ import com.github.manosbatsis.domainprimitives.test.common.example.*;
 import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.*;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -78,8 +77,7 @@ class ConversionServiceTest {
 
         // Assert conversion is accurate
         var actualConversionResult = conversionService.convert(wrappedValue, domainPrimitiveClass);
-        assertThat(actualConversionResult).isNotNull();
-        assertThat(actualConversionResult).isEqualTo(expectedDomainPrimitive);
+        assertThat(actualConversionResult).isNotNull().isEqualTo(expectedDomainPrimitive);
         assertThat(actualConversionResult.value()).isEqualTo(wrappedValue);
     }
 
@@ -101,8 +99,7 @@ class ConversionServiceTest {
 
         // Assert conversion is accurate
         var actualConversionResult = conversionService.convert(wrappedValue.toString(), domainPrimitiveClass);
-        assertThat(actualConversionResult).isNotNull();
-        assertThat(actualConversionResult).isEqualTo(expectedDomainPrimitive);
+        assertThat(actualConversionResult).isNotNull().isEqualTo(expectedDomainPrimitive);
         assertThat(actualConversionResult.value()).isEqualTo(wrappedValue);
     }
 

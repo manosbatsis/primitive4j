@@ -21,9 +21,8 @@ import jakarta.persistence.Converter;
 import jakarta.validation.constraints.Positive;
 
 /**
- * The quantity of products or materials in an {@link OrderLine}.
- * Not to be confused with the units of measure as packaged or otherwise provided
- * by the product.
+ * The quantity of products or materials in an {@link OrderLine}. Not to be confused with the units
+ * of measure as packaged or otherwise provided by the product.
  */
 @Schema(implementation = Integer.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc.
 public record Quantity(@Positive Integer value) implements DomainPrimitive<Integer> {

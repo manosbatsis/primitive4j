@@ -31,8 +31,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
- * Annotation processor that handles {@link GenerateDomainPrimitive} annotations
- * to generate implementations of {@link DomainPrimitive}.
+ * Annotation processor that handles {@link GenerateDomainPrimitive} annotations to generate
+ * implementations of {@link DomainPrimitive}.
  */
 public final class DomainPrimitivesAnnotationProcessor extends AbstractProcessor {
 

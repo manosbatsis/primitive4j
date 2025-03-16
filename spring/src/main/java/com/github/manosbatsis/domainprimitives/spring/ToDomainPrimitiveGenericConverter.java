@@ -26,7 +26,7 @@ import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.lang.Nullable;
 
 @Slf4j
-public class ToDomainPrimitiveConverter implements GenericConverter, ConditionalConverter {
+public class ToDomainPrimitiveGenericConverter implements GenericConverter, ConditionalConverter {
 
     @Override
     @Nullable
@@ -61,7 +61,7 @@ public class ToDomainPrimitiveConverter implements GenericConverter, Conditional
                     GenericTypeResolver.resolveTypeArgument(targetClass, DomainPrimitive.class);
             return Objects.nonNull(targetInnerValueClass)
                     && (targetInnerValueClass.isAssignableFrom(sourceClass)
-                    || hasRelevantConstructor(targetType, sourceClass));
+                            || hasRelevantConstructor(targetType, sourceClass));
         }
         return false;
     }

@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.io.Serializable;
 
 /**
+ * Base interface for dedicated wrapper types of common value-objects.
+ *
  * @param <I> the wrapped, inner value type
  */
 public interface DomainPrimitive<I extends Serializable> extends Serializable {

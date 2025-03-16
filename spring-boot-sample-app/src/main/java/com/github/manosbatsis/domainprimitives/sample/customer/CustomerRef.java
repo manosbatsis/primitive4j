@@ -45,9 +45,7 @@ public class CustomerRef extends AbstractDomainPrimitive<String> {
         super(value);
     }
 
-    /**
-     * A JPA converter for {@link CustomerRef}
-     */
+    /** A JPA converter for {@link CustomerRef} */
     @Converter(autoApply = true)
     static class CustomerRefAttributeConverter extends DomainPrimitiveAttributeConverter<CustomerRef, String> {
         public CustomerRefAttributeConverter() {

@@ -26,7 +26,7 @@ import org.springframework.lang.Nullable;
 
 @Slf4j
 @RequiredArgsConstructor
-public class FromDomainPrimitiveConverter implements GenericConverter, ConditionalConverter {
+public class FromDomainPrimitiveGenericConverter implements GenericConverter, ConditionalConverter {
 
     @Override
     @Nullable

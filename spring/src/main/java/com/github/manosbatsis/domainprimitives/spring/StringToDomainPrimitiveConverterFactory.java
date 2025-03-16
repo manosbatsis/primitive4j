@@ -23,12 +23,13 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.converter.ConverterFactory;
 
 /**
- * Creates converters for cases where the source type is a String
- * VS the actual value type of the target {@link DomainPrimitive} implementation.
+ * Creates converters for cases where the source type is a String VS the actual value type of the
+ * target {@link DomainPrimitive} implementation.
  */
 @Slf4j
 @RequiredArgsConstructor
-public class StringToDomainPrimitiveConverterFactory<T extends DomainPrimitive> implements ConverterFactory<String, T> {
+public class StringToDomainPrimitiveConverterFactory<T extends DomainPrimitive<?>>
+        implements ConverterFactory<String, T> {
 
     private final ConversionService conversionService;
 
@@ -37,21 +38,6 @@ public class StringToDomainPrimitiveConverterFactory<T extends DomainPrimitive> 
         log.info("getConverter CALLED");
         Class<?> targetInnerValueClass = GenericTypeResolver.resolveTypeArgument(targetType, DomainPrimitive.class);
         assert targetInnerValueClass != null;
-        return new StringToDomainPrimitiveConverter(targetType, targetInnerValueClass, conversionService);
+        return new StringToDomainPrimitiveConverter<>(targetType, targetInnerValueClass, conversionService);
     }
-
-    /**
-     * Will reject for DomainPrimitive<String> as already handled elsewhere
-     *
-     * @Override
-     * public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
-     * Class<?> targetInnerValueClass =
-     * GenericTypeResolver.resolveTypeArgument(targetType.getObjectType(), DomainPrimitive.class);
-     * if (targetInnerValueClass == null) {
-     * log.warn(
-     * "Could not resolve DomainPrimitive inner value type for {}, will ignore.",
-     * targetType.getObjectType());
-     * }
-     * return targetInnerValueClass != null && !String.class.isAssignableFrom(targetInnerValueClass);
-     * }*/
 }

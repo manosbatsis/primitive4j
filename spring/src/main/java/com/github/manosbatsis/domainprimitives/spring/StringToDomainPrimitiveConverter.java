@@ -15,7 +15,6 @@
 package com.github.manosbatsis.domainprimitives.spring;
 
 import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
-import java.io.Serializable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
@@ -23,11 +22,10 @@ import org.springframework.core.convert.converter.Converter;
 
 @Slf4j
 @RequiredArgsConstructor
-public class StringToDomainPrimitiveConverter<I extends Serializable, T extends DomainPrimitive<I>>
-        implements Converter<String, T> {
+public class StringToDomainPrimitiveConverter<T extends DomainPrimitive<?>> implements Converter<String, T> {
 
     private final Class<T> targetType;
-    private final Class<I> innerValueType;
+    private final Class<?> innerValueType;
     private final ConversionService conversionService;
 
     @Override

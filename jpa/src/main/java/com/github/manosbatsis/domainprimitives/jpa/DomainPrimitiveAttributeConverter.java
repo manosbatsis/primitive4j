@@ -19,6 +19,10 @@ import jakarta.persistence.AttributeConverter;
 import java.io.Serializable;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Convenient base class when implementing JPA converters
+ * for specific {@link DomainPrimitive} types.
+ */
 @RequiredArgsConstructor
 public abstract class DomainPrimitiveAttributeConverter<T extends DomainPrimitive<I>, I extends Serializable>
         implements AttributeConverter<T, I> {

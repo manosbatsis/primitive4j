@@ -16,5 +16,5 @@ package com.github.manosbatsis.domainprimitives.spring.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "manosbatsis.domainprimitives")
+@ConfigurationProperties(prefix = "manosbatsis.domain-primitives")
 public record DomainPrimitivesProperties() {}

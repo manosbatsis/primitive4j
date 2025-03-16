@@ -15,9 +15,9 @@
 package com.github.manosbatsis.domainprimitives.spring.autoconfigure;
 
 import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
-import com.github.manosbatsis.domainprimitives.spring.FromDomainPrimitiveConverter;
+import com.github.manosbatsis.domainprimitives.spring.FromDomainPrimitiveGenericConverter;
 import com.github.manosbatsis.domainprimitives.spring.StringToDomainPrimitiveConverterFactory;
-import com.github.manosbatsis.domainprimitives.spring.ToDomainPrimitiveConverter;
+import com.github.manosbatsis.domainprimitives.spring.ToDomainPrimitiveGenericConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -38,8 +38,8 @@ public class DomainPrimitivesAutoConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new FromDomainPrimitiveConverter());
-        registry.addConverter(new ToDomainPrimitiveConverter());
+        registry.addConverter(new FromDomainPrimitiveGenericConverter());
+        registry.addConverter(new ToDomainPrimitiveGenericConverter());
         registry.addConverterFactory(new StringToDomainPrimitiveConverterFactory<>(conversionService));
     }
 }
