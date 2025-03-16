@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * subtype of {@link DomainPrimitive} and has a single-arg constructor.
  */
 @Target({ElementType.TYPE})
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface GenerateDomainPrimitive {
 
     /** The class name of the generated domain primitive. */
@@ -60,6 +60,6 @@ public @interface GenerateDomainPrimitive {
     enum FeatureMode {
         ACTIVE,
         INACTIVE,
-        AUTO;
+        AUTO
     }
 }

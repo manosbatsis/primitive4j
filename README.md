@@ -1,6 +1,6 @@
-# jvm-typed-id
+# Domain Primitives
 
-Dedicated wrapper types for identifiers and references in Java (Kotlin, Groovy etc.) applications.
+Create dedicated value-objects for typed identifiers, references, units etc. on the JVM.
 
 ## The problem
 
@@ -80,31 +80,17 @@ In our previous example, the `Order` class has a `customerRef`. The `Customer` h
 There is clearly a logical relationship between the two classes, but while using simple-typed references they remain 
 statically independent.
 
-In his famous book Clean Code, Robert Cecil Martin (colloquially known as Uncle Bob) states that:
+In Clean Code, Robert Cecil Martin (colloquially known as Uncle Bob) states that:
 
 > If one module depends upon another, that dependency should be physical, not just logical.
 
-Typed references materialize the logical dependency by creating a physical one. So, if we change the type of the proposal reference, the compiler will stop us if we forget to change the
-
-proposalRef type in the
-
-OnboardingProcess class.
-
-Representation, Validation and Other Logic
-
-A typed reference class is self contained acts as a single point to control representation, e.g. a prefix or other logic.
+Using domain primitives we can establish typed references and materialize the logical dependency by creating a physical one. 
 
 
-This includes validation, i.e. when creating a typed reference object we can be sure that it is valid by adding a guard condition in the constructor. We can similarly add other useful logic.
+### Representation, Validation and Other Logic
 
-Support Infrastructure
+A domain primitive is self-contained and acts as a single point to control representation, e.g. value format or other 
+validation logic. When creating a domain primitive we can be sure that it is valid by adding a guard condition in the 
+constructor. 
 
-Depending on how abstract we’d like the implementation to be, a Spring Boot starter could provide:
 
-    G
-    eneric JPA/Hibernate user type
-    G
-    eneric Converter for JSON (de)se
-    rialization
-    (Optional) Code gen
-    eration for the reference types themselves
