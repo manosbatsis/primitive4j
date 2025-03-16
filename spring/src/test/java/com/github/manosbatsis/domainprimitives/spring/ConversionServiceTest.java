@@ -25,7 +25,6 @@ import java.util.*;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -33,7 +32,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.format.support.FormattingConversionService;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Slf4j
@@ -59,19 +58,7 @@ class ConversionServiceTest {
     }
 
     @Autowired
-    private FormattingConversionService conversionService;
-
-    @Autowired
-    private FromDomainPrimitiveConverter fromDomainPrimitiveConverter;
-
-    @Autowired
-    private ToDomainPrimitiveConverter toTypedPropertyConverter;
-
-    @BeforeEach
-    void setUp() {
-        conversionService.addConverter(fromDomainPrimitiveConverter);
-        conversionService.addConverter(toTypedPropertyConverter);
-    }
+    private ConversionService conversionService;
 
     @ParameterizedTest(name = "Should convert {0} to {1}")
     @MethodSource("conversionData")
@@ -81,8 +68,6 @@ class ConversionServiceTest {
         var expectedValueClass = wrappedValue.getClass();
         // Assert our converters recognize the conversion pairs, include
         // string as input
-        assertThat(conversionService.canConvert(String.class, domainPrimitiveClass))
-                .isTrue();
         assertThat(conversionService.canConvert(expectedValueClass, domainPrimitiveClass))
                 .isTrue();
 
@@ -93,6 +78,29 @@ class ConversionServiceTest {
 
         // Assert conversion is accurate
         var actualConversionResult = conversionService.convert(wrappedValue, domainPrimitiveClass);
+        assertThat(actualConversionResult).isNotNull();
+        assertThat(actualConversionResult).isEqualTo(expectedDomainPrimitive);
+        assertThat(actualConversionResult.value()).isEqualTo(wrappedValue);
+    }
+
+    @ParameterizedTest(name = "Should convert String to {1}")
+    @MethodSource("conversionData")
+    @SneakyThrows
+    <T extends Serializable> void whenConvertringStringTo_thenNoExceptions(
+            T wrappedValue, Class<? extends DomainPrimitive<T>> domainPrimitiveClass) {
+        var expectedValueClass = wrappedValue.getClass();
+        // Assert our converters recognize the conversion pairs, include
+        // string as input
+        assertThat(conversionService.canConvert(String.class, domainPrimitiveClass))
+                .isTrue();
+
+        // Assert our primitives work as expected
+        DomainPrimitive<T> expectedDomainPrimitive =
+                domainPrimitiveClass.getConstructor(expectedValueClass).newInstance(wrappedValue);
+        assertThat(expectedDomainPrimitive.value()).isEqualTo(wrappedValue);
+
+        // Assert conversion is accurate
+        var actualConversionResult = conversionService.convert(wrappedValue.toString(), domainPrimitiveClass);
         assertThat(actualConversionResult).isNotNull();
         assertThat(actualConversionResult).isEqualTo(expectedDomainPrimitive);
         assertThat(actualConversionResult.value()).isEqualTo(wrappedValue);

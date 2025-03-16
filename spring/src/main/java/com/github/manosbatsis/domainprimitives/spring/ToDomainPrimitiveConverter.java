@@ -15,10 +15,11 @@
 package com.github.manosbatsis.domainprimitives.spring;
 
 import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalConverter;
 import org.springframework.core.convert.converter.GenericConverter;
@@ -34,11 +35,6 @@ public class ToDomainPrimitiveConverter implements GenericConverter, Conditional
     }
 
     @Override
-    public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
-        return DomainPrimitive.class.isAssignableFrom(targetType.getType());
-    }
-
-    @Override
     @Nullable
     public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
         log.info("convert CALLED");
@@ -49,11 +45,31 @@ public class ToDomainPrimitiveConverter implements GenericConverter, Conditional
                             .getConstructor(sourceType.getObjectType())
                             .newInstance(source)
                     : null;
-        } catch (NoSuchMethodException
-                | InstantiationException
-                | IllegalAccessException
-                | InvocationTargetException e) {
+        } catch (Exception e) {
             throw new DomainPrimitiveConversionException("Failed converting", e);
         }
+    }
+
+    @Override
+    public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
+        var targetClass = targetType.getObjectType();
+        // Target must implement DomainPrimitive...
+        if (DomainPrimitive.class.isAssignableFrom(targetClass)) {
+            // and have the same value type as sourceType or a compatible constructor
+            var sourceClass = sourceType.getObjectType();
+            Class<?> targetInnerValueClass =
+                    GenericTypeResolver.resolveTypeArgument(targetClass, DomainPrimitive.class);
+            return Objects.nonNull(targetInnerValueClass)
+                    && (targetInnerValueClass.isAssignableFrom(sourceClass)
+                    || hasRelevantConstructor(targetType, sourceClass));
+        }
+        return false;
+    }
+
+    private static boolean hasRelevantConstructor(TypeDescriptor targetType, Class<?> sourceClass) {
+        return Arrays.stream(targetType.getObjectType().getConstructors()).anyMatch(constr -> {
+            var paraTypes = constr.getParameterTypes();
+            return paraTypes.length == 1 && Arrays.stream(paraTypes).anyMatch(it -> it.isAssignableFrom(sourceClass));
+        });
     }
 }
