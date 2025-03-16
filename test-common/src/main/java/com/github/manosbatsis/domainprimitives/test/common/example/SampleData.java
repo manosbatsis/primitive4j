@@ -29,27 +29,26 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.stream.Stream;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SampleData {
 
-    public record ConvertibleConfig(
-            Serializable value, Class<? extends DomainPrimitive<?>>... domainPrimitiveClasses) {}
+    public record ConvertibleConfig<T extends Serializable>(
+            T value, Class<? extends DomainPrimitive<T>>... domainPrimitiveClasses) {
 
-    public record Convertible<T>(T value, Class<? extends DomainPrimitive<?>> domainPrimitiveClass) {
-        @Override
-        public String toString() {
-            return new ToStringBuilder(this)
-                    .append("value", value)
-                    .append("domainPrimitiveClass", domainPrimitiveClass)
-                    .toString();
+        public Stream<Convertible<T>> flatten() {
+            return Arrays.stream(domainPrimitiveClasses).map(clazz -> toConvertible(value, clazz));
+        }
+
+        private Convertible<T> toConvertible(T value, Class<? extends DomainPrimitive<T>> clazz) {
+            return new Convertible<>(value, clazz);
         }
     }
 
-    public static Stream<Convertible<? extends Serializable>> convertibles()
-            throws MalformedURLException, URISyntaxException {
-        return convertibleConfigs().flatMap(config -> Arrays.stream(config.domainPrimitiveClasses)
-                .map(clazz -> new Convertible<>(config.value, clazz)));
+    public record Convertible<T extends Serializable>(
+            T value, Class<? extends DomainPrimitive<?>> domainPrimitiveClass) {}
+
+    public static Stream<Convertible> convertibles() throws MalformedURLException, URISyntaxException {
+        return convertibleConfigs().flatMap(it -> it.flatten());
     }
 
     public static Stream<ConvertibleConfig> convertibleConfigs() throws MalformedURLException, URISyntaxException {

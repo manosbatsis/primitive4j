@@ -23,10 +23,12 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Stream;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -46,9 +48,14 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
         })
 class ConversionServiceTest {
 
-    static Stream<SampleData.Convertible<? extends Serializable>> convertables()
-            throws MalformedURLException, URISyntaxException {
-        return SampleData.convertibles();
+    static Stream<Arguments> conversionData() throws MalformedURLException, URISyntaxException {
+        return SampleData.convertibles().map(it -> {
+            var valueClassName = it.value().getClass().getSimpleName();
+            var domainPrimitiveClassName = it.domainPrimitiveClass().getSimpleName();
+            return Arguments.arguments(
+                    Named.named(valueClassName, it.value()),
+                    Named.named(domainPrimitiveClassName, it.domainPrimitiveClass()));
+        });
     }
 
     @Autowired
@@ -66,48 +73,51 @@ class ConversionServiceTest {
         conversionService.addConverter(toTypedPropertyConverter);
     }
 
-    @ParameterizedTest
-    @MethodSource("convertables")
-    @DisplayName("{0}")
-    <T extends Serializable> void whenConvertringTo_thenNoExceptions(SampleData.Convertible<T> convertibleConfig) {
-        T wrappedValue = convertibleConfig.value();
-
+    @ParameterizedTest(name = "Should convert {0} to {1}")
+    @MethodSource("conversionData")
+    @SneakyThrows
+    <T extends Serializable> void whenConvertringTo_thenNoExceptions(
+            T wrappedValue, Class<? extends DomainPrimitive<T>> domainPrimitiveClass) {
         var expectedValueClass = wrappedValue.getClass();
-        try {
-            // Assert our converters recognize the conversion pairs, include
-            // string as input
-            assertThat(conversionService.canConvert(String.class, convertibleConfig.domainPrimitiveClass()))
-                    .isTrue();
-            assertThat(conversionService.canConvert(expectedValueClass, convertibleConfig.domainPrimitiveClass()))
-                    .isTrue();
+        // Assert our converters recognize the conversion pairs, include
+        // string as input
+        assertThat(conversionService.canConvert(String.class, domainPrimitiveClass))
+                .isTrue();
+        assertThat(conversionService.canConvert(expectedValueClass, domainPrimitiveClass))
+                .isTrue();
 
-            // Assert our primitives work as expected
-            DomainPrimitive<T> expectedDomainPrimitive = (DomainPrimitive<T>) convertibleConfig
-                    .domainPrimitiveClass()
-                    .getConstructor(expectedValueClass)
-                    .newInstance(wrappedValue);
-            assertThat(expectedDomainPrimitive.value()).isEqualTo(wrappedValue);
+        // Assert our primitives work as expected
+        DomainPrimitive<T> expectedDomainPrimitive =
+                domainPrimitiveClass.getConstructor(expectedValueClass).newInstance(wrappedValue);
+        assertThat(expectedDomainPrimitive.value()).isEqualTo(wrappedValue);
 
-            // Assert conversion is accurate
-            var actualConversionResult =
-                    conversionService.convert(wrappedValue, convertibleConfig.domainPrimitiveClass());
-            assertThat(actualConversionResult).isNotNull();
-            assertThat(actualConversionResult).isEqualTo(expectedDomainPrimitive);
-            assertThat(actualConversionResult.value()).isEqualTo(wrappedValue);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        // Assert conversion is accurate
+        var actualConversionResult = conversionService.convert(wrappedValue, domainPrimitiveClass);
+        assertThat(actualConversionResult).isNotNull();
+        assertThat(actualConversionResult).isEqualTo(expectedDomainPrimitive);
+        assertThat(actualConversionResult.value()).isEqualTo(wrappedValue);
     }
 
-    @ParameterizedTest
-    @MethodSource("convertables")
-    <T extends Serializable> void whenConvertringFrom_thenNoExceptions(SampleData.Convertible<T> convertibleConfig) {
-        String expectedCustomerIdValue = UUID.randomUUID().toString();
-        StringBeanPrimitive stringBeanPrimitive = new StringBeanPrimitive(expectedCustomerIdValue);
-        assertThat(conversionService.canConvert(StringBeanPrimitive.class, String.class))
+    @ParameterizedTest(name = "Should convert {1} to {0}")
+    @MethodSource("conversionData")
+    @SneakyThrows
+    <T extends Serializable> void whenConvertringFrom_thenNoExceptions(
+            T wrappedValue, Class<? extends DomainPrimitive<T>> domainPrimitiveClass) {
+        var expectedValueClass = wrappedValue.getClass();
+        // Assert our converters recognize the conversion pairs, include
+        // string as output
+        assertThat(conversionService.canConvert(domainPrimitiveClass, String.class))
                 .isTrue();
-        String actual = conversionService.convert(stringBeanPrimitive, String.class);
-        assertThat(actual).isEqualTo(expectedCustomerIdValue);
+        assertThat(conversionService.canConvert(domainPrimitiveClass, expectedValueClass))
+                .isTrue();
+
+        // Assert our primitives work as expected
+        DomainPrimitive<T> domainPrimitive =
+                domainPrimitiveClass.getConstructor(expectedValueClass).newInstance(wrappedValue);
+        assertThat(domainPrimitive.value()).isEqualTo(wrappedValue);
+
+        // Assert conversion is accurate
+        var actualConversionResult = conversionService.convert(domainPrimitive, wrappedValue.getClass());
+        assertThat(actualConversionResult).isNotNull().isEqualTo(wrappedValue);
     }
 }
