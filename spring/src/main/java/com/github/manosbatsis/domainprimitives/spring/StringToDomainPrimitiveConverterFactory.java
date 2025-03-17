@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.spring;
 
-import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
+import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.GenericTypeResolver;
@@ -24,19 +24,18 @@ import org.springframework.core.convert.converter.ConverterFactory;
 
 /**
  * Creates converters for cases where the source type is a String VS the actual value type of the
- * target {@link DomainPrimitive} implementation.
+ * target {@link Sdp4jType} implementation.
  */
 @Slf4j
 @RequiredArgsConstructor
-public class StringToDomainPrimitiveConverterFactory<T extends DomainPrimitive<?>>
-        implements ConverterFactory<String, T> {
+public class StringToDomainPrimitiveConverterFactory<T extends Sdp4jType<?>> implements ConverterFactory<String, T> {
 
     private final ConversionService conversionService;
 
     @Override
     public <T1 extends T> Converter<String, T1> getConverter(Class<T1> targetType) {
         log.info("getConverter CALLED");
-        Class<?> targetInnerValueClass = GenericTypeResolver.resolveTypeArgument(targetType, DomainPrimitive.class);
+        Class<?> targetInnerValueClass = GenericTypeResolver.resolveTypeArgument(targetType, Sdp4jType.class);
         assert targetInnerValueClass != null;
         return new StringToDomainPrimitiveConverter<>(targetType, targetInnerValueClass, conversionService);
     }

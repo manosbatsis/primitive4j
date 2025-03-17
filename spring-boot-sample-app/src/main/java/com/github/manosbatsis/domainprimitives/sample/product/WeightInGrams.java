@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.sample.product;
 
-import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
+import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
 import com.github.manosbatsis.domainprimitives.jpa.DomainPrimitiveAttributeConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Converter;
@@ -22,7 +22,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 /** Weight in grams, a metric unit of mass equal to one thousandth of a kilogram. */
 @Schema(implementation = Integer.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc.
-public record WeightInGrams(@PositiveOrZero Integer value) implements DomainPrimitive<Integer> {
+public record WeightInGrams(@PositiveOrZero Integer value) implements Sdp4jType<Integer> {
 
     /** A JPA converter for {@link WeightInGrams} */
     @Converter(autoApply = true)

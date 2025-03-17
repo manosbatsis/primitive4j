@@ -1,8 +1,7 @@
 
 
 dependencies {
-	api(project(":domain-primitives-core"))
-	api(project(":domain-primitives-spring"))
-	api(project(":domain-primitives-jpa"))
-	api("com.fasterxml.jackson.core:jackson-annotations")
+	api(project(":sdp4j-core"))
+	api(project(":sdp4j-spring"))
+	api(project(":sdp4j-jpa"))
 }

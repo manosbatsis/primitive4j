@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.spring;
 
-import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
+import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
 import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -36,12 +36,12 @@ public class FromDomainPrimitiveGenericConverter implements GenericConverter, Co
 
     @Override
     public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
-        return DomainPrimitive.class.isAssignableFrom(sourceType.getType());
+        return Sdp4jType.class.isAssignableFrom(sourceType.getType());
     }
 
     @Override
     @Nullable
     public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
-        return Objects.nonNull(source) ? ((DomainPrimitive<?>) source).value() : null;
+        return Objects.nonNull(source) ? ((Sdp4jType<?>) source).value() : null;
     }
 }

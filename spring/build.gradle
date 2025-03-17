@@ -1,8 +1,8 @@
 
 
 dependencies {
-	api project(":domain-primitives-core")
+	api project(":sdp4j-core")
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation project(":domain-primitives-test-common")
+	testImplementation project(":sdp4j-test-common")
 }

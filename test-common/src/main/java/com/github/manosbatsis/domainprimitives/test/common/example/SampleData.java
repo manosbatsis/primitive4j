@@ -14,11 +14,10 @@
  */
 package com.github.manosbatsis.domainprimitives.test.common.example;
 
-import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
-import com.github.manosbatsis.domainprimitives.test.common.example.network.UriBeanPrimitive;
-import com.github.manosbatsis.domainprimitives.test.common.example.network.UriRecordPrimitive;
-import com.github.manosbatsis.domainprimitives.test.common.example.network.UrlBeanPrimitive;
-import com.github.manosbatsis.domainprimitives.test.common.example.network.UrlRecordPrimitive;
+import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.*;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.UriBeanPrimitiveSimple;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.UrlRecordPrimitiveSimple;
 import com.github.manosbatsis.domainprimitives.test.common.example.numbers.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -33,19 +32,18 @@ import java.util.stream.Stream;
 public class SampleData {
 
     public record ConvertibleConfig<T extends Serializable>(
-            T value, Class<? extends DomainPrimitive<T>>... domainPrimitiveClasses) {
+            T value, Class<? extends Sdp4jType<T>>... domainPrimitiveClasses) {
 
         public Stream<Convertible<T>> flatten() {
             return Arrays.stream(domainPrimitiveClasses).map(clazz -> toConvertible(value, clazz));
         }
 
-        private Convertible<T> toConvertible(T value, Class<? extends DomainPrimitive<T>> clazz) {
+        private Convertible<T> toConvertible(T value, Class<? extends Sdp4jType<T>> clazz) {
             return new Convertible<>(value, clazz);
         }
     }
 
-    public record Convertible<T extends Serializable>(
-            T value, Class<? extends DomainPrimitive<?>> domainPrimitiveClass) {}
+    public record Convertible<T extends Serializable>(T value, Class<? extends Sdp4jType<?>> domainPrimitiveClass) {}
 
     public static Stream<Convertible> convertibles() throws MalformedURLException, URISyntaxException {
         return convertibleConfigs().flatMap(it -> it.flatten());
@@ -56,19 +54,26 @@ public class SampleData {
         var randomUri = new URI("http://%s.com".formatted(UUID.randomUUID().toString()));
         return Stream.of(
                 // Network
-                new ConvertibleConfig(randomUri, UriRecordPrimitive.class, UriBeanPrimitive.class),
-                new ConvertibleConfig(randomUri.toURL(), UrlRecordPrimitive.class, UrlBeanPrimitive.class),
+                new ConvertibleConfig(randomUri, UriRecordPrimitiveSimple.class, UriBeanPrimitiveSimple.class),
+                new ConvertibleConfig(randomUri.toURL(), UrlRecordPrimitiveSimple.class, UrlBeanPrimitiveSimple.class),
                 // Numbers
-                new ConvertibleConfig(BigDecimal.TEN, BigDecimalRecordPrimitive.class, BigDecimalBeanPrimitive.class),
-                new ConvertibleConfig(BigInteger.TEN, BigIntegerRecordPrimitive.class, BigIntegerBeanPrimitive.class),
-                new ConvertibleConfig(Byte.MAX_VALUE, ByteRecordPrimitive.class, ByteBeanPrimitive.class),
-                new ConvertibleConfig(Double.MAX_VALUE, DoubleRecordPrimitive.class, DoubleBeanPrimitive.class),
-                new ConvertibleConfig(Float.MAX_VALUE, FloatRecordPrimitive.class, FloatBeanPrimitive.class),
-                new ConvertibleConfig(Integer.MAX_VALUE, IntegerRecordPrimitive.class, IntegerBeanPrimitive.class),
-                new ConvertibleConfig(Long.MAX_VALUE, LongRecordPrimitive.class, LongBeanPrimitive.class),
-                new ConvertibleConfig(Short.MAX_VALUE, ShortRecordPrimitive.class, ShortBeanPrimitive.class),
+                new ConvertibleConfig(
+                        BigDecimal.TEN, BigDecimalRecordPrimitiveSimple.class, BigDecimalBeanPrimitiveSimple.class),
+                new ConvertibleConfig(
+                        BigInteger.TEN, BigIntegerRecordPrimitiveSimple.class, BigIntegerBeanPrimitiveSimple.class),
+                new ConvertibleConfig(Byte.MAX_VALUE, ByteRecordPrimitiveSimple.class, ByteBeanPrimitiveSimple.class),
+                new ConvertibleConfig(
+                        Double.MAX_VALUE, DoubleRecordPrimitiveSimple.class, DoubleBeanPrimitiveSimple.class),
+                new ConvertibleConfig(
+                        Float.MAX_VALUE, FloatRecordPrimitiveSimple.class, FloatBeanPrimitiveSimple.class),
+                new ConvertibleConfig(
+                        Integer.MAX_VALUE, IntegerRecordPrimitiveSimple.class, IntegerBeanPrimitiveSimple.class),
+                new ConvertibleConfig(Long.MAX_VALUE, LongRecordPrimitiveSimple.class, LongBeanPrimitiveSimple.class),
+                new ConvertibleConfig(
+                        Short.MAX_VALUE, ShortRecordPrimitiveSimple.class, ShortBeanPrimitiveSimple.class),
                 // String-based
-                new ConvertibleConfig(randomUuid.toString(), StringRecordPrimitive.class, StringBeanPrimitive.class),
-                new ConvertibleConfig(randomUuid, UuidRecordPrimitive.class, UuidBeanPrimitive.class));
+                new ConvertibleConfig(
+                        randomUuid.toString(), StringRecordPrimitiveSimple.class, StringBeanPrimitiveSimple.class),
+                new ConvertibleConfig(randomUuid, UuidRecordPrimitiveSimple.class, UuidBeanPrimitiveSimple.class));
     }
 }

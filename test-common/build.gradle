@@ -1,7 +1,6 @@
 
 
 dependencies {
-    api(project(":domain-primitives-core"))
-    api("com.fasterxml.jackson.core:jackson-annotations")
+    api(project(":sdp4j-core"))
     implementation 'org.apache.commons:commons-lang3'
 }

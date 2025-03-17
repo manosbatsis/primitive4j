@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.sample.order;
 
-import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
+import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
 import com.github.manosbatsis.domainprimitives.jpa.DomainPrimitiveAttributeConverter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Converter;
@@ -22,7 +22,7 @@ import java.util.UUID;
 
 /** A primary key type dedicated to Order entities. */
 @Schema(implementation = UUID.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc.
-public record OrderId(UUID value) implements DomainPrimitive<UUID> {
+public record OrderId(UUID value) implements Sdp4jType<UUID> {
 
     /** A JPA converter for {@link OrderId} */
     @Converter(autoApply = true)

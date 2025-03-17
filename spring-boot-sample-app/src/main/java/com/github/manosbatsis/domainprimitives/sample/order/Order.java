@@ -30,6 +30,6 @@ public class Order {
     @Valid
     private OrderId id;
 
-    CustomerRef customerRef;
+    private CustomerRef customerRef;
     private String comments;
 }

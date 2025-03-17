@@ -12,21 +12,14 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.domainprimitives.core;
+package com.github.manosbatsis.domainprimitives.annotationprocessor;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import java.io.IOException;
+import lombok.experimental.StandardException;
 
-@Builder
-@AllArgsConstructor
-public class Customer {
-
-    static class CustomerId extends AbstractSdp4jType<String> {
-        public CustomerId(String value) {
-            super(value);
-        }
+@StandardException
+public class Sdp4jTypeGenerationException extends RuntimeException {
+    static Sdp4jTypeGenerationException couldNotWriteFile(IOException e) {
+        throw new Sdp4jTypeGenerationException("Could not write Java file for domain primitive", e);
     }
-
-    private CustomerId id;
-    private String name;
 }

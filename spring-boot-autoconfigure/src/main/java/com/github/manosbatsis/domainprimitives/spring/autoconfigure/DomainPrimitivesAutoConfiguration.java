@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.spring.autoconfigure;
 
-import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
+import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
 import com.github.manosbatsis.domainprimitives.spring.FromDomainPrimitiveGenericConverter;
 import com.github.manosbatsis.domainprimitives.spring.StringToDomainPrimitiveConverterFactory;
 import com.github.manosbatsis.domainprimitives.spring.ToDomainPrimitiveGenericConverter;
@@ -28,7 +28,7 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@ConditionalOnClass(DomainPrimitive.class)
+@ConditionalOnClass(Sdp4jType.class)
 @EnableConfigurationProperties(DomainPrimitivesProperties.class)
 public class DomainPrimitivesAutoConfiguration implements WebMvcConfigurer {
 

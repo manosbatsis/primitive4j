@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.spring;
 
-import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
+import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
@@ -53,12 +53,11 @@ public class ToDomainPrimitiveGenericConverter implements GenericConverter, Cond
     @Override
     public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
         var targetClass = targetType.getObjectType();
-        // Target must implement DomainPrimitive...
-        if (DomainPrimitive.class.isAssignableFrom(targetClass)) {
+        // Target must implement Sdp4jType...
+        if (Sdp4jType.class.isAssignableFrom(targetClass)) {
             // and have the same value type as sourceType or a compatible constructor
             var sourceClass = sourceType.getObjectType();
-            Class<?> targetInnerValueClass =
-                    GenericTypeResolver.resolveTypeArgument(targetClass, DomainPrimitive.class);
+            Class<?> targetInnerValueClass = GenericTypeResolver.resolveTypeArgument(targetClass, Sdp4jType.class);
             return Objects.nonNull(targetInnerValueClass)
                     && (targetInnerValueClass.isAssignableFrom(sourceClass)
                             || hasRelevantConstructor(targetType, sourceClass));

@@ -14,19 +14,22 @@
  */
 package com.github.manosbatsis.domainprimitives.core;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import java.io.Serializable;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@Builder
-@AllArgsConstructor
-public class Customer {
+/**
+ * @param <I> the primitive wrapped value
+ */
+@Getter
+@RequiredArgsConstructor
+@EqualsAndHashCode
+public abstract class AbstractSdp4jType<I extends Serializable> implements Sdp4jType<I> {
+    private final I value;
 
-    static class CustomerId extends AbstractSdp4jType<String> {
-        public CustomerId(String value) {
-            super(value);
-        }
+    @Override
+    public I value() {
+        return getValue();
     }
-
-    private CustomerId id;
-    private String name;
 }

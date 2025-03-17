@@ -14,19 +14,16 @@
  */
 package com.github.manosbatsis.domainprimitives.core;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonValue;
+import java.io.Serializable;
 
-@Builder
-@AllArgsConstructor
-public class Customer {
+/**
+ * Base interface for dedicated wrapper types of common value-objects.
+ *
+ * @param <I> the wrapped, inner value type
+ */
+public interface Sdp4jType<I extends Serializable> extends Serializable {
 
-    static class CustomerId extends AbstractSdp4jType<String> {
-        public CustomerId(String value) {
-            super(value);
-        }
-    }
-
-    private CustomerId id;
-    private String name;
+    @JsonValue
+    I value();
 }

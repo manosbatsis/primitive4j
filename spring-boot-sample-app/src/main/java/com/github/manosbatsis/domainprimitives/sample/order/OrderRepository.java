@@ -14,6 +14,11 @@
  */
 package com.github.manosbatsis.domainprimitives.sample.order;
 
+import com.github.manosbatsis.domainprimitives.sample.customer.CustomerRef;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface OrderRepository extends JpaRepository<Order, OrderId> {}
+public interface OrderRepository extends JpaRepository<Order, OrderId> {
+    Page<Order> findAllByCustomerRef(CustomerRef customerRef, Pageable pageable);
+}

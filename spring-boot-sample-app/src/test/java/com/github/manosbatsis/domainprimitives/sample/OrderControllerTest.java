@@ -14,9 +14,11 @@
  */
 package com.github.manosbatsis.domainprimitives.sample;
 
+import com.github.manosbatsis.domainprimitives.sample.customer.Customer;
+import com.github.manosbatsis.domainprimitives.sample.customer.CustomerRef;
+import com.github.manosbatsis.domainprimitives.sample.customer.CustomerRepository;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -28,14 +30,21 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-@Disabled
 class OrderControllerTest {
 
     @Autowired
     private WebTestClient webTestClient;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @Test
     void shouldCreateUpdateAndRetrieveOrders() {
+        customerRepository.saveAndFlush(Customer.builder()
+                .id(UUID.randomUUID())
+                .name("Travis Cornell")
+                .ref(new CustomerRef("CUS-001"))
+                .build());
         UUID orderId = UUID.randomUUID();
         var comments = "Bla bla";
 
@@ -45,6 +54,7 @@ class OrderControllerTest {
                 .bodyValue(
                         """
                         {
+                          "customerRef": "CUS-001",
                           "comments": "%s",
                           "id": "%s"
                         }

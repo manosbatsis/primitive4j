@@ -16,7 +16,7 @@ package com.github.manosbatsis.domainprimitives.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
+import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
 import com.github.manosbatsis.domainprimitives.test.common.example.*;
 import java.io.Serializable;
 import java.net.MalformedURLException;
@@ -63,7 +63,7 @@ class ConversionServiceTest {
     @MethodSource("conversionData")
     @SneakyThrows
     <T extends Serializable> void whenConvertringTo_thenNoExceptions(
-            T wrappedValue, Class<? extends DomainPrimitive<T>> domainPrimitiveClass) {
+            T wrappedValue, Class<? extends Sdp4jType<T>> domainPrimitiveClass) {
         var expectedValueClass = wrappedValue.getClass();
         // Assert our converters recognize the conversion pairs, include
         // string as input
@@ -71,13 +71,13 @@ class ConversionServiceTest {
                 .isTrue();
 
         // Assert our primitives work as expected
-        DomainPrimitive<T> expectedDomainPrimitive =
+        Sdp4jType<T> expectedSdp4jType =
                 domainPrimitiveClass.getConstructor(expectedValueClass).newInstance(wrappedValue);
-        assertThat(expectedDomainPrimitive.value()).isEqualTo(wrappedValue);
+        assertThat(expectedSdp4jType.value()).isEqualTo(wrappedValue);
 
         // Assert conversion is accurate
         var actualConversionResult = conversionService.convert(wrappedValue, domainPrimitiveClass);
-        assertThat(actualConversionResult).isNotNull().isEqualTo(expectedDomainPrimitive);
+        assertThat(actualConversionResult).isNotNull().isEqualTo(expectedSdp4jType);
         assertThat(actualConversionResult.value()).isEqualTo(wrappedValue);
     }
 
@@ -85,7 +85,7 @@ class ConversionServiceTest {
     @MethodSource("conversionData")
     @SneakyThrows
     <T extends Serializable> void whenConvertringStringTo_thenNoExceptions(
-            T wrappedValue, Class<? extends DomainPrimitive<T>> domainPrimitiveClass) {
+            T wrappedValue, Class<? extends Sdp4jType<T>> domainPrimitiveClass) {
         var expectedValueClass = wrappedValue.getClass();
         // Assert our converters recognize the conversion pairs, include
         // string as input
@@ -93,13 +93,13 @@ class ConversionServiceTest {
                 .isTrue();
 
         // Assert our primitives work as expected
-        DomainPrimitive<T> expectedDomainPrimitive =
+        Sdp4jType<T> expectedSdp4jType =
                 domainPrimitiveClass.getConstructor(expectedValueClass).newInstance(wrappedValue);
-        assertThat(expectedDomainPrimitive.value()).isEqualTo(wrappedValue);
+        assertThat(expectedSdp4jType.value()).isEqualTo(wrappedValue);
 
         // Assert conversion is accurate
         var actualConversionResult = conversionService.convert(wrappedValue.toString(), domainPrimitiveClass);
-        assertThat(actualConversionResult).isNotNull().isEqualTo(expectedDomainPrimitive);
+        assertThat(actualConversionResult).isNotNull().isEqualTo(expectedSdp4jType);
         assertThat(actualConversionResult.value()).isEqualTo(wrappedValue);
     }
 
@@ -107,7 +107,7 @@ class ConversionServiceTest {
     @MethodSource("conversionData")
     @SneakyThrows
     <T extends Serializable> void whenConvertringFrom_thenNoExceptions(
-            T wrappedValue, Class<? extends DomainPrimitive<T>> domainPrimitiveClass) {
+            T wrappedValue, Class<? extends Sdp4jType<T>> domainPrimitiveClass) {
         var expectedValueClass = wrappedValue.getClass();
         // Assert our converters recognize the conversion pairs, include
         // string as output
@@ -117,12 +117,12 @@ class ConversionServiceTest {
                 .isTrue();
 
         // Assert our primitives work as expected
-        DomainPrimitive<T> domainPrimitive =
+        Sdp4jType<T> sdp4jType =
                 domainPrimitiveClass.getConstructor(expectedValueClass).newInstance(wrappedValue);
-        assertThat(domainPrimitive.value()).isEqualTo(wrappedValue);
+        assertThat(sdp4jType.value()).isEqualTo(wrappedValue);
 
         // Assert conversion is accurate
-        var actualConversionResult = conversionService.convert(domainPrimitive, wrappedValue.getClass());
+        var actualConversionResult = conversionService.convert(sdp4jType, wrappedValue.getClass());
         assertThat(actualConversionResult).isNotNull().isEqualTo(wrappedValue);
     }
 }

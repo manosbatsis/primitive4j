@@ -14,19 +14,17 @@
  */
 package com.github.manosbatsis.domainprimitives.core;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-@Builder
-@AllArgsConstructor
-public class Customer {
-
-    static class CustomerId extends AbstractSdp4jType<String> {
-        public CustomerId(String value) {
-            super(value);
-        }
-    }
-
-    private CustomerId id;
-    private String name;
+/**
+ * A containing annotation used to automatically generate
+ * multiple domain primitive types.
+ */
+@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.CLASS)
+public @interface GenerateSdp4jTypes {
+    GenerateSdp4jType[] value();
 }

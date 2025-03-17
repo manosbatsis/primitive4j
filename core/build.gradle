@@ -1,5 +1,5 @@
 
 
 dependencies {
-    api("com.fasterxml.jackson.core:jackson-annotations")
+    compileOnly("com.fasterxml.jackson.core:jackson-annotations")
 }

@@ -12,21 +12,13 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.domainprimitives.core;
+package com.github.manosbatsis.domainprimitives.test.common.example.network;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.github.manosbatsis.domainprimitives.core.AbstractSdp4jType;
+import java.net.URL;
 
-@Builder
-@AllArgsConstructor
-public class Customer {
-
-    static class CustomerId extends AbstractSdp4jType<String> {
-        public CustomerId(String value) {
-            super(value);
-        }
+public class UrlBeanPrimitiveSimple extends AbstractSdp4jType<URL> {
+    public UrlBeanPrimitiveSimple(URL value) {
+        super(value);
     }
-
-    private CustomerId id;
-    private String name;
 }

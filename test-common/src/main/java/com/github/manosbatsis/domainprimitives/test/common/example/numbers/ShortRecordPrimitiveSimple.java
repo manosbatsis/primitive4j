@@ -12,21 +12,9 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.domainprimitives.core;
+package com.github.manosbatsis.domainprimitives.test.common.example.numbers;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
 
-@Builder
-@AllArgsConstructor
-public class Customer {
-
-    static class CustomerId extends AbstractSdp4jType<String> {
-        public CustomerId(String value) {
-            super(value);
-        }
-    }
-
-    private CustomerId id;
-    private String name;
-}
+/** A primary key type dedicated to Order entities. */
+public record ShortRecordPrimitiveSimple(Short value) implements Sdp4jType<Short> {}
