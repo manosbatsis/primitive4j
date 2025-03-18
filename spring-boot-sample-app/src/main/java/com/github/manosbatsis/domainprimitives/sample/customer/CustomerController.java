@@ -22,23 +22,50 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/customers")
+@RequestMapping(CustomerController.BASE_PATH)
 public class CustomerController {
+
+    public static final String BASE_PATH = "api/customers";
 
     private final CustomerRepository repository;
 
     @GetMapping("{ref}")
-    ResponseEntity<Customer> getByRef(@PathVariable CustomerRef ref) {
-        return ResponseEntity.of(repository.findOneByRef(ref));
+    ResponseEntity<CustomerResponse> getByRef(@PathVariable CustomerRef ref) {
+        return repository
+                .findOneByRef(ref)
+                .map(customer -> ResponseEntity.ok(CustomerResponse.builder()
+                        .ref(customer.getRef())
+                        .name(customer.getName())
+                        .build()))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    ResponseEntity<Customer> save(@Valid @RequestBody Customer entity) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(entity));
+    ResponseEntity<CustomerResponse> save(@Valid @RequestBody CustomerCreateRequest request) {
+        var customer = repository.save(
+                Customer.builder().name(request.getName()).ref(request.getRef()).build());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(CustomerResponse.builder()
+                        .ref(customer.getRef())
+                        .name(customer.getName())
+                        .build());
     }
 
     @PutMapping("{ref}")
-    ResponseEntity<Customer> updateByRef(@Valid @RequestBody Customer entity, @PathVariable CustomerRef ref) {
-        return ResponseEntity.ok(repository.save(entity));
+    ResponseEntity<CustomerResponse> updateByRef(
+            @Valid @RequestBody CustomerUpdateRequest request, @PathVariable CustomerRef ref) {
+        var maybeCustomer = repository.findOneByRef(ref);
+        if (maybeCustomer.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        var customer = maybeCustomer.get();
+        customer.setName(request.getName());
+        customer = repository.save(customer);
+
+        return ResponseEntity.ok(CustomerResponse.builder()
+                .ref(customer.getRef())
+                .name(customer.getName())
+                .build());
     }
 }

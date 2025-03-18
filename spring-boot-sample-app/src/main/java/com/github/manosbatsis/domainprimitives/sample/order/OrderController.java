@@ -15,6 +15,7 @@
 package com.github.manosbatsis.domainprimitives.sample.order;
 
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,23 +23,25 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/orders")
+@RequestMapping(OrderController.BASE_PATH)
 public class OrderController {
 
-    private final OrderRepository repository;
+    public static final String BASE_PATH = "api/purchase-orders";
+
+    private final PurchaseOrderRepository repository;
 
     @GetMapping("{id}")
-    ResponseEntity<Order> findById(@PathVariable OrderId id) {
+    ResponseEntity<PurchaseOrder> findById(@PathVariable UUID id) {
         return ResponseEntity.of(repository.findById(id));
     }
 
     @PostMapping
-    ResponseEntity<Order> save(@Valid @RequestBody Order entity) {
+    ResponseEntity<PurchaseOrder> save(@Valid @RequestBody PurchaseOrder entity) {
         return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(entity));
     }
 
     @PutMapping("{id}")
-    ResponseEntity<Order> update(@Valid @RequestBody Order entity, @PathVariable OrderId id) {
+    ResponseEntity<PurchaseOrder> update(@Valid @RequestBody PurchaseOrder entity, @PathVariable UUID id) {
         return ResponseEntity.ok(repository.save(entity));
     }
 }

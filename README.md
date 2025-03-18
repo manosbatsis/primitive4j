@@ -180,3 +180,25 @@ ResponseEntity<Order> update(@RequestBody OrderDto order, @PathVariable OrderId 
     return ResponseEntity.ok(service.update(order, id));
 }
 ```
+
+
+## Troubleshooting
+
+### Can Simple Domain Primitives be used with JPA (Hibernate/EclipseLink) @Id anmnotations?
+
+In short, no. Not at the moment at least, as the current implementation is based on JPA Attribute Converters. 
+According to the JPA 2.2 spec (10.6):
+
+> Note that Id attributes, version attributes, relationship attributes, and attributes explicitly annotated as 
+> Enumerated or Temporal (or designated as such via XML) will not be converted.
+
+Furthermore, section 3.8 of the same spec reads: 
+
+> The conversion of all basic types is supported except for the following: Id attributes (including the
+> attributes of embedded ids and derived identities), version attributes, relationship attributes, and 
+> attributes explicitly annotated as Enumerated or Temporal or designated as such in the XML 
+> descriptor. Auto-apply converters will not be applied to such attributes, and applications that apply 
+> converters to such attributes through use of the Convert annotation will not be portable.
+
+If you want to create a simple primitive for a primary key, you might want to consider a user type instead.
+If you want more support for this in SDP4J, please create an issue.

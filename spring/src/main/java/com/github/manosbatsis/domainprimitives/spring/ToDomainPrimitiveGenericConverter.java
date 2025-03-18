@@ -52,17 +52,18 @@ public class ToDomainPrimitiveGenericConverter implements GenericConverter, Cond
 
     @Override
     public boolean matches(TypeDescriptor sourceType, TypeDescriptor targetType) {
+        var matches = false;
         var targetClass = targetType.getObjectType();
         // Target must implement Sdp4jType...
         if (Sdp4jType.class.isAssignableFrom(targetClass)) {
             // and have the same value type as sourceType or a compatible constructor
             var sourceClass = sourceType.getObjectType();
             Class<?> targetInnerValueClass = GenericTypeResolver.resolveTypeArgument(targetClass, Sdp4jType.class);
-            return Objects.nonNull(targetInnerValueClass)
+            matches = Objects.nonNull(targetInnerValueClass)
                     && (targetInnerValueClass.isAssignableFrom(sourceClass)
                             || hasRelevantConstructor(targetType, sourceClass));
         }
-        return false;
+        return matches;
     }
 
     private static boolean hasRelevantConstructor(TypeDescriptor targetType, Class<?> sourceClass) {

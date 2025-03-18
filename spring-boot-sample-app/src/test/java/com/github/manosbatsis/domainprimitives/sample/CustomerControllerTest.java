@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.sample;
 
-import java.util.UUID;
+import com.github.manosbatsis.domainprimitives.sample.customer.CustomerController;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,37 +34,40 @@ class CustomerControllerTest {
 
     @Test
     void shouldCreateUpdateAndRetrieveCustomers() {
-        UUID customerId = UUID.randomUUID();
-        String sCustomerRef = "CUS-001";
-
+        String customerRef = "CUS-001";
+        String customerName = "Travis Cornell";
         webTestClient
                 .post()
-                .uri("api/customers")
+                .uri(CustomerController.BASE_PATH)
                 .bodyValue(
                         """
                         {
-                          "name": "Travis Cornell",
-                          "ref": "%s",
-                          "id": "%s"
+                          "name": "%s",
+                          "ref": "%s"
                         }
                         """
-                                .formatted(sCustomerRef, customerId))
+                                .formatted(customerName, customerRef))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()
                 .isCreated()
                 .expectBody()
+                .jsonPath("name")
+                .isEqualTo(customerName)
                 .jsonPath("ref")
-                .isEqualTo(sCustomerRef);
+                .isEqualTo(customerRef);
 
         webTestClient
                 .get()
-                .uri(uriBuilder -> uriBuilder.path("/api/customers/{ref}").build(sCustomerRef))
+                .uri(uriBuilder ->
+                        uriBuilder.path(CustomerController.BASE_PATH + "/{ref}").build(customerRef))
                 .exchange()
                 .expectStatus()
                 .isOk()
                 .expectBody()
+                .jsonPath("name")
+                .isEqualTo(customerName)
                 .jsonPath("ref")
-                .isEqualTo(sCustomerRef);
+                .isEqualTo(customerRef);
     }
 }

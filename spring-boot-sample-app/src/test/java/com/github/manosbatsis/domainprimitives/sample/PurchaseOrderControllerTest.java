@@ -17,6 +17,7 @@ package com.github.manosbatsis.domainprimitives.sample;
 import com.github.manosbatsis.domainprimitives.sample.customer.Customer;
 import com.github.manosbatsis.domainprimitives.sample.customer.CustomerRef;
 import com.github.manosbatsis.domainprimitives.sample.customer.CustomerRepository;
+import com.github.manosbatsis.domainprimitives.sample.order.OrderController;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -30,7 +31,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-class OrderControllerTest {
+class PurchaseOrderControllerTest {
 
     @Autowired
     private WebTestClient webTestClient;
@@ -40,26 +41,26 @@ class OrderControllerTest {
 
     @Test
     void shouldCreateUpdateAndRetrieveOrders() {
+        var customerRef = "CUS-002";
         customerRepository.saveAndFlush(Customer.builder()
-                .id(UUID.randomUUID())
                 .name("Travis Cornell")
-                .ref(new CustomerRef("CUS-001"))
+                .ref(new CustomerRef(customerRef))
                 .build());
         UUID orderId = UUID.randomUUID();
         var comments = "Bla bla";
 
         webTestClient
                 .post()
-                .uri("api/orders")
+                .uri(OrderController.BASE_PATH)
                 .bodyValue(
                         """
                         {
-                          "customerRef": "CUS-001",
+                          "customerRef": "%s",
                           "comments": "%s",
                           "id": "%s"
                         }
                         """
-                                .formatted(comments, orderId.toString()))
+                                .formatted(customerRef, comments, orderId.toString()))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()
@@ -73,15 +74,17 @@ class OrderControllerTest {
         var updatedComments = "Bla bla updated";
         webTestClient
                 .put()
-                .uri(uriBuilder -> uriBuilder.path("/api/orders/{id}").build(orderId.toString()))
+                .uri(uriBuilder ->
+                        uriBuilder.path(OrderController.BASE_PATH + "/{id}").build(orderId.toString()))
                 .bodyValue(
                         """
                         {
+                          "customerRef": "%s",
                           "comments": "%s",
                           "id": "%s"
                         }
                         """
-                                .formatted(updatedComments, orderId.toString()))
+                                .formatted(customerRef, updatedComments, orderId.toString()))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()
@@ -94,7 +97,8 @@ class OrderControllerTest {
 
         webTestClient
                 .get()
-                .uri(uriBuilder -> uriBuilder.path("/api/orders/{id}").build(orderId.toString()))
+                .uri(uriBuilder ->
+                        uriBuilder.path(OrderController.BASE_PATH + "/{id}").build(orderId.toString()))
                 .exchange()
                 .expectStatus()
                 .isOk()

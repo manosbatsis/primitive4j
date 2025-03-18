@@ -14,33 +14,19 @@
  */
 package com.github.manosbatsis.domainprimitives.sample.customer;
 
-import com.github.manosbatsis.domainprimitives.core.AbstractMutableSdp4jType;
-import com.github.manosbatsis.domainprimitives.core.GenerateSdp4jType;
-import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import java.util.UUID;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@GenerateSdp4jType(
-        name = "CustomerRef",
-        javaDoc = "A business key type dedicated to Customer entities.",
-        valueType = String.class,
-        extend = AbstractMutableSdp4jType.class)
 @Builder
-public class Customer {
+@Data
+public class CustomerResponse {
 
-    @Id
-    @GeneratedValue
-    private UUID id;
-
-    @Valid
-    @Column(updatable = false, nullable = false, unique = true)
+    @NotNull
     private CustomerRef ref;
 
+    @NotNull
+    @NotBlank
     private String name;
 }

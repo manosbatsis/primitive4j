@@ -47,7 +47,7 @@ public final class Sdp4jTypeAnnotationProcessor extends AbstractProcessor {
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
-        return Set.of(GenerateSdp4jType.class.getCanonicalName());
+        return Set.of(GenerateSdp4jTypes.class.getCanonicalName(), GenerateSdp4jType.class.getCanonicalName());
     }
 
     @Override

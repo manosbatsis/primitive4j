@@ -12,24 +12,22 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.domainprimitives.sample.order;
+package com.github.manosbatsis.domainprimitives.sample.customer;
 
-import com.github.manosbatsis.domainprimitives.sample.customer.CustomerRef;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Entity
-@Getter
-@Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Order {
-    @Id
-    @Valid
-    private OrderId id;
+@Builder
+@Data
+public class CustomerCreateRequest {
 
-    private CustomerRef customerRef;
-    private String comments;
+    @Valid
+    private CustomerRef ref;
+
+    @NotNull
+    @NotBlank
+    private String name;
 }
