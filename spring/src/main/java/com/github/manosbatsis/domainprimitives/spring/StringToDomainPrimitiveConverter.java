@@ -31,6 +31,12 @@ public class StringToDomainPrimitiveConverter<T extends Sdp4jType<?>> implements
     @Override
     public T convert(String source) {
         log.info("convert CALLED for value: {}", source);
+
+        if (!conversionService.canConvert(source.getClass(), innerValueType)) {
+            throw new IllegalArgumentException("Provided conversion service unable to convert from %s to %s"
+                    .formatted(source.getClass().getCanonicalName(), innerValueType.getCanonicalName()));
+        }
+
         try {
             var sourceAsInnerValueType = conversionService.convert(source, innerValueType);
             return targetType.getConstructor(innerValueType).newInstance(sourceAsInnerValueType);

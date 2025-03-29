@@ -23,12 +23,20 @@ spring:
     log-request-details: true
 logging:
   level:
-    root: INFO
+    root: info
+    sql: debug
+    com:
+      github:
+        manosbatsis:
+          domainprimitives: debug
     org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: trace
       springframework:
         web:
           reactive:
             function:
               client:
-                ExchangeFunctions: TRACE
-
+                ExchangeFunctions: trace

@@ -15,20 +15,24 @@
 package com.github.manosbatsis.domainprimitives.core;
 
 import java.io.Serializable;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @param <I> the primitive wrapped value
  */
+@Slf4j
 @Getter
 @Setter
-@RequiredArgsConstructor
 @EqualsAndHashCode
 public abstract class AbstractMutableSdp4jType<I extends Serializable> implements Sdp4jType<I> {
-    private final I value;
+
+    private I value;
+
+    public AbstractMutableSdp4jType(I value) {
+        this.value = value;
+        log.info("Initialized with {} value: {}", value.getClass().getSimpleName(), value);
+    }
 
     @Override
     public I value() {

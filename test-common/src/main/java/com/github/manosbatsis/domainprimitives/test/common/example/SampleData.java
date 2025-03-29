@@ -15,10 +15,6 @@
 package com.github.manosbatsis.domainprimitives.test.common.example;
 
 import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
-import com.github.manosbatsis.domainprimitives.test.common.example.network.*;
-import com.github.manosbatsis.domainprimitives.test.common.example.network.UriBeanPrimitiveSimple;
-import com.github.manosbatsis.domainprimitives.test.common.example.network.UrlRecordPrimitiveSimple;
-import com.github.manosbatsis.domainprimitives.test.common.example.numbers.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -54,26 +50,18 @@ public class SampleData {
         var randomUri = new URI("http://%s.com".formatted(UUID.randomUUID().toString()));
         return Stream.of(
                 // Network
-                new ConvertibleConfig(randomUri, UriRecordPrimitiveSimple.class, UriBeanPrimitiveSimple.class),
-                new ConvertibleConfig(randomUri.toURL(), UrlRecordPrimitiveSimple.class, UrlBeanPrimitiveSimple.class),
+                new ConvertibleConfig(randomUri, UriRecord.class, UriBean.class),
+                new ConvertibleConfig(randomUri.toURL(), UrlRecord.class, UrlBean.class),
                 // Numbers
-                new ConvertibleConfig(
-                        BigDecimal.TEN, BigDecimalRecordPrimitiveSimple.class, BigDecimalBeanPrimitiveSimple.class),
-                new ConvertibleConfig(
-                        BigInteger.TEN, BigIntegerRecordPrimitiveSimple.class, BigIntegerBeanPrimitiveSimple.class),
-                new ConvertibleConfig(Byte.MAX_VALUE, ByteRecordPrimitiveSimple.class, ByteBeanPrimitiveSimple.class),
-                new ConvertibleConfig(
-                        Double.MAX_VALUE, DoubleRecordPrimitiveSimple.class, DoubleBeanPrimitiveSimple.class),
-                new ConvertibleConfig(
-                        Float.MAX_VALUE, FloatRecordPrimitiveSimple.class, FloatBeanPrimitiveSimple.class),
-                new ConvertibleConfig(
-                        Integer.MAX_VALUE, IntegerRecordPrimitiveSimple.class, IntegerBeanPrimitiveSimple.class),
-                new ConvertibleConfig(Long.MAX_VALUE, LongRecordPrimitiveSimple.class, LongBeanPrimitiveSimple.class),
-                new ConvertibleConfig(
-                        Short.MAX_VALUE, ShortRecordPrimitiveSimple.class, ShortBeanPrimitiveSimple.class),
+                new ConvertibleConfig(BigDecimal.TEN, BigDecimalRecord.class, BigDecimalBean.class),
+                new ConvertibleConfig(BigInteger.TEN, BigIntegerRecord.class, BigIntegerBean.class),
+                new ConvertibleConfig(Double.MAX_VALUE, DoubleRecord.class, DoubleBean.class),
+                new ConvertibleConfig(Float.MAX_VALUE, FloatRecord.class, FloatBean.class),
+                new ConvertibleConfig(Integer.MAX_VALUE, IntegerRecord.class, IntegerBean.class),
+                new ConvertibleConfig(Long.MAX_VALUE, LongRecord.class, LongBean.class),
+                new ConvertibleConfig(Short.MAX_VALUE, ShortRecord.class, ShortBean.class),
                 // String-based
-                new ConvertibleConfig(
-                        randomUuid.toString(), StringRecordPrimitiveSimple.class, StringBeanPrimitiveSimple.class),
-                new ConvertibleConfig(randomUuid, UuidRecordPrimitiveSimple.class, UuidBeanPrimitiveSimple.class));
+                new ConvertibleConfig(randomUuid.toString(), StringRecord.class, StringBean.class),
+                new ConvertibleConfig(randomUuid, UuidRecord.class, UuidBean.class));
     }
 }

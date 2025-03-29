@@ -12,12 +12,20 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.domainprimitives.test.common.example.numbers;
+package com.github.manosbatsis.domainprimitives.sample.sampleentity;
 
-import com.github.manosbatsis.domainprimitives.core.AbstractSdp4jType;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-public class DoubleBeanPrimitiveSimple extends AbstractSdp4jType<Double> {
-    public DoubleBeanPrimitiveSimple(Double value) {
-        super(value);
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class SampleEntityService {
+
+    private final SampleEntityRepository repository;
+
+    public SampleEntity save(SampleEntity entity) {
+        return repository.save(entity);
     }
 }

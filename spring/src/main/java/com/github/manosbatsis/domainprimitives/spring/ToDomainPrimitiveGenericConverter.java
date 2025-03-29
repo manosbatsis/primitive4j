@@ -37,7 +37,7 @@ public class ToDomainPrimitiveGenericConverter implements GenericConverter, Cond
     @Override
     @Nullable
     public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
-        log.info("convert CALLED");
+        log.info("convert CALLED for value: {}", source);
         try {
             return Objects.nonNull(source)
                     ? targetType

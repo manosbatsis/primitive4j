@@ -12,9 +12,16 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.domainprimitives.test.common.example.numbers;
+package com.github.manosbatsis.domainprimitives.test.common.example;
 
-import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
+import com.github.manosbatsis.domainprimitives.core.AbstractMutableSdp4jType;
+import com.github.manosbatsis.domainprimitives.core.GenerateSdp4jType;
+import jakarta.persistence.MappedSuperclass;
+import java.util.UUID;
 
-/** A primary key type dedicated to Order entities. */
-public record IntegerRecordPrimitiveSimple(Integer value) implements Sdp4jType<Integer> {}
+@GenerateSdp4jType(name = "StringBean", valueType = String.class, extend = AbstractMutableSdp4jType.class)
+@GenerateSdp4jType(name = "StringRecord", valueType = String.class)
+@GenerateSdp4jType(name = "UuidBean", valueType = UUID.class, extend = AbstractMutableSdp4jType.class)
+@GenerateSdp4jType(name = "UuidRecord", valueType = UUID.class)
+@MappedSuperclass // Trigger JPA code generation
+public class SampleStringBasedPrimitives {}

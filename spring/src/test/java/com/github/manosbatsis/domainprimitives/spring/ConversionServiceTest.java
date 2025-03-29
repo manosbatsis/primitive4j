@@ -98,7 +98,8 @@ class ConversionServiceTest {
         assertThat(expectedSdp4jType.value()).isEqualTo(wrappedValue);
 
         // Assert conversion is accurate
-        var actualConversionResult = conversionService.convert(wrappedValue.toString(), domainPrimitiveClass);
+        var serializedValue = conversionService.convert(wrappedValue, String.class);
+        var actualConversionResult = conversionService.convert(serializedValue, domainPrimitiveClass);
         assertThat(actualConversionResult).isNotNull().isEqualTo(expectedSdp4jType);
         assertThat(actualConversionResult.value()).isEqualTo(wrappedValue);
     }

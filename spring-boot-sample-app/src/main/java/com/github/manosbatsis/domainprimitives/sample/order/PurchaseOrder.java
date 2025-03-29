@@ -27,6 +27,7 @@ import lombok.*;
 public class PurchaseOrder {
 
     @Id
+    @GeneratedValue
     private UUID id;
 
     @Column(updatable = false, nullable = false)

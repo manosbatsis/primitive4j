@@ -12,13 +12,17 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.domainprimitives.test.common.example.numbers;
+package com.github.manosbatsis.domainprimitives.test.common.example;
 
-import com.github.manosbatsis.domainprimitives.core.AbstractSdp4jType;
-import java.math.BigInteger;
+import com.github.manosbatsis.domainprimitives.core.AbstractMutableSdp4jType;
+import com.github.manosbatsis.domainprimitives.core.GenerateSdp4jType;
+import jakarta.persistence.MappedSuperclass;
+import java.net.URI;
+import java.net.URL;
 
-public class BigIntegerBeanPrimitiveSimple extends AbstractSdp4jType<BigInteger> {
-    public BigIntegerBeanPrimitiveSimple(BigInteger value) {
-        super(value);
-    }
-}
+@GenerateSdp4jType(name = "UriBean", valueType = URI.class, extend = AbstractMutableSdp4jType.class)
+@GenerateSdp4jType(name = "UriRecord", valueType = URI.class)
+@GenerateSdp4jType(name = "UrlBean", valueType = URL.class, extend = AbstractMutableSdp4jType.class)
+@GenerateSdp4jType(name = "UrlRecord", valueType = URL.class)
+@MappedSuperclass // Trigger JPA code generation
+public class SampleNetworkPrimitives {}

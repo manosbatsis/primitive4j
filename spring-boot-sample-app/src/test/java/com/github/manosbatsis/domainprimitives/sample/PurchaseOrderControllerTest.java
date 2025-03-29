@@ -14,11 +14,13 @@
  */
 package com.github.manosbatsis.domainprimitives.sample;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.github.manosbatsis.domainprimitives.sample.customer.Customer;
 import com.github.manosbatsis.domainprimitives.sample.customer.CustomerRef;
 import com.github.manosbatsis.domainprimitives.sample.customer.CustomerRepository;
 import com.github.manosbatsis.domainprimitives.sample.order.OrderController;
-import java.util.UUID;
+import com.github.manosbatsis.domainprimitives.sample.order.PurchaseOrder;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,41 +43,39 @@ class PurchaseOrderControllerTest {
 
     @Test
     void shouldCreateUpdateAndRetrieveOrders() {
-        var customerRef = "CUS-002";
+        var customerRef = "CUS-003";
         customerRepository.saveAndFlush(Customer.builder()
                 .name("Travis Cornell")
                 .ref(new CustomerRef(customerRef))
                 .build());
-        UUID orderId = UUID.randomUUID();
         var comments = "Bla bla";
 
-        webTestClient
+        var savedPo = webTestClient
                 .post()
                 .uri(OrderController.BASE_PATH)
                 .bodyValue(
                         """
                         {
                           "customerRef": "%s",
-                          "comments": "%s",
-                          "id": "%s"
+                          "comments": "%s"
                         }
                         """
-                                .formatted(customerRef, comments, orderId.toString()))
+                                .formatted(customerRef, comments))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()
                 .isCreated()
-                .expectBody()
-                .jsonPath("id")
-                .isEqualTo(orderId.toString())
-                .jsonPath("comments")
-                .isEqualTo(comments);
+                .expectBody(PurchaseOrder.class)
+                .returnResult()
+                .getResponseBody();
+
+        assertThat(savedPo).isNotNull();
 
         var updatedComments = "Bla bla updated";
         webTestClient
                 .put()
                 .uri(uriBuilder ->
-                        uriBuilder.path(OrderController.BASE_PATH + "/{id}").build(orderId.toString()))
+                        uriBuilder.path(OrderController.BASE_PATH + "/{id}").build(savedPo.getId()))
                 .bodyValue(
                         """
                         {
@@ -84,27 +84,27 @@ class PurchaseOrderControllerTest {
                           "id": "%s"
                         }
                         """
-                                .formatted(customerRef, updatedComments, orderId.toString()))
+                                .formatted(customerRef, updatedComments, savedPo.getId()))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()
                 .isOk()
                 .expectBody()
                 .jsonPath("id")
-                .isEqualTo(orderId.toString())
+                .isEqualTo(savedPo.getId())
                 .jsonPath("comments")
                 .isEqualTo(updatedComments);
 
         webTestClient
                 .get()
                 .uri(uriBuilder ->
-                        uriBuilder.path(OrderController.BASE_PATH + "/{id}").build(orderId.toString()))
+                        uriBuilder.path(OrderController.BASE_PATH + "/{id}").build(savedPo.getId()))
                 .exchange()
                 .expectStatus()
                 .isOk()
                 .expectBody()
                 .jsonPath("id")
-                .isEqualTo(orderId)
+                .isEqualTo(savedPo.getId())
                 .jsonPath("comments")
                 .isEqualTo(updatedComments);
     }

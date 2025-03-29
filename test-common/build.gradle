@@ -3,4 +3,9 @@
 dependencies {
     api(project(":sdp4j-core"))
     implementation 'org.apache.commons:commons-lang3'
+    compileOnly(project(":sdp4j-jpa"))
+    compileOnly(project(":sdp4j-spring"))
+    compileOnly("jakarta.persistence:jakarta.persistence-api")
+    compileOnly("com.fasterxml.jackson.core:jackson-annotations")
+    annotationProcessor(project(":sdp4j-annotation-processor"))
 }

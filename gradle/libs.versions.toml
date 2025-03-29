@@ -4,10 +4,12 @@ jakarta-validation-api-version = "3.0.2"
 spring-boot-version = "3.4.3"
 spotless-version = "7.0.2"
 freefair-lombok-version = "8.12.2.1"
+datafaker-version = "2.4.2"
 
 [libraries]
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation-api-version" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind-version" }
+datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker-version" }
 
 [bundles]
 
