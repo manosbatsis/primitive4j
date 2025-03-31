@@ -31,6 +31,7 @@ public class SampleEntity {
     @GeneratedValue
     private UUID id;
 
+    // Network value types
     @Column(columnDefinition = "varchar(500)", nullable = false)
     private UriBean uriBean;
 
@@ -43,7 +44,7 @@ public class SampleEntity {
     @Column(columnDefinition = "varchar(500)", nullable = false)
     private UrlRecord urlRecord;
 
-    // Numbers
+    // Number value types
     @Column(columnDefinition = "decimal(10,2)", nullable = false)
     private BigDecimalBean bigDecimalBean;
 
@@ -85,7 +86,7 @@ public class SampleEntity {
 
     @Column(columnDefinition = "smallint", nullable = false)
     private ShortRecord shortRecord;
-    // Strings
+    // String value types
     @Column(columnDefinition = "varchar(255)", nullable = false)
     private StringBean stringBean;
 

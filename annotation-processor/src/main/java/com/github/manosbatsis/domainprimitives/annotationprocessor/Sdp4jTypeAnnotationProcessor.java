@@ -225,7 +225,7 @@ public final class Sdp4jTypeAnnotationProcessor extends AbstractProcessor {
                      * A JPA converter for {@link %s}
                      */
                     @Converter(autoApply = true)
-                    static class %sAttributeConverter
+                    public static class %sAttributeConverter
                             extends DomainPrimitiveAttributeConverter<%s, %s> {
                         public %sAttributeConverter() {
                             super(%s.class, %s.class);

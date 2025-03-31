@@ -29,12 +29,10 @@ import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
@@ -45,11 +43,11 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-@AutoConfigureWebTestClient
+@AutoConfigureWebTestClient(timeout = "PT10S")
 class SampleEntityControllerTest {
 
-    private static Faker faker = new Faker();
-    private static SampleEntity sampleInstance = buildSampleEntity();
+    private static final Faker faker = new Faker();
+    private static final SampleEntity sampleInstance = buildSampleEntity();
 
     private static Stream<Arguments> sampleInstanceUrlFragments() {
         return Stream.of(
@@ -58,18 +56,17 @@ class SampleEntityControllerTest {
                 Arguments.of("findAllByUriBean", sampleInstance.getUriBean()),
                 Arguments.of("findAllByUrlBean", sampleInstance.getUrlBean()),
                 Arguments.of("findAllByUrlRecord", sampleInstance.getUrlRecord()),
-                // TODO
                 // Numbers
-                //                Arguments.of("findAllByBigDecimalBean", sampleInstance.getBigDecimalBean()),
-                //                Arguments.of("findAllByBigDecimalRecord", sampleInstance.getBigDecimalRecord()),
-                //                Arguments.of("findAllByBigIntegerBean", sampleInstance.getBigIntegerBean()),
-                //                Arguments.of("findAllByBigIntegerRecord", sampleInstance.getBigIntegerRecord()),
-                //                Arguments.of("findAllByDoubleBean", sampleInstance.getDoubleBean()),
-                //                Arguments.of("findAllByDoubleRecord", sampleInstance.getDoubleRecord()),
-                //                Arguments.of("findAllByFloatBean", sampleInstance.getFloatBean()),
-                //                Arguments.of("findAllByFloatRecord", sampleInstance.getFloatRecord()),
-                //                Arguments.of("findAllByIntegerBean", sampleInstance.getIntegerBean()),
-                //                Arguments.of("findAllByIntegerRecord", sampleInstance.getIntegerRecord()),
+                Arguments.of("findAllByBigDecimalBean", sampleInstance.getBigDecimalBean()),
+                Arguments.of("findAllByBigDecimalRecord", sampleInstance.getBigDecimalRecord()),
+                Arguments.of("findAllByBigIntegerBean", sampleInstance.getBigIntegerBean()),
+                Arguments.of("findAllByBigIntegerRecord", sampleInstance.getBigIntegerRecord()),
+                Arguments.of("findAllByDoubleBean", sampleInstance.getDoubleBean()),
+                Arguments.of("findAllByDoubleRecord", sampleInstance.getDoubleRecord()),
+                Arguments.of("findAllByFloatBean", sampleInstance.getFloatBean()),
+                Arguments.of("findAllByFloatRecord", sampleInstance.getFloatRecord()),
+                Arguments.of("findAllByIntegerBean", sampleInstance.getIntegerBean()),
+                Arguments.of("findAllByIntegerRecord", sampleInstance.getIntegerRecord()),
                 Arguments.of("findAllByLongBean", sampleInstance.getLongBean()),
                 Arguments.of("findAllByLongRecord", sampleInstance.getLongRecord()),
                 Arguments.of("findAllByShortBean", sampleInstance.getShortBean()),
@@ -81,10 +78,8 @@ class SampleEntityControllerTest {
                 Arguments.of("findAllByUuidRecord", sampleInstance.getUuidRecord()));
     }
 
-    @Autowired
     private SampleEntityService sampleEntityService;
 
-    @Autowired
     private WebTestClient webTestClient;
 
     @Test
@@ -96,7 +91,6 @@ class SampleEntityControllerTest {
 
     @ParameterizedTest(name = "Search {0}")
     @MethodSource("sampleInstanceUrlFragments")
-    @Disabled
     void shouldBeAbleToSearchByAnySimplePrimitiveProperty(String pathFragment, Sdp4jType<?> valueFragment) {
         // Create an entity instance with fixed random values
         sampleEntityService.save(sampleInstance);
