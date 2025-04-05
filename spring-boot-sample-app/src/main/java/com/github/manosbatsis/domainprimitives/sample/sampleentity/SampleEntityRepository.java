@@ -15,6 +15,7 @@
 package com.github.manosbatsis.domainprimitives.sample.sampleentity;
 
 import com.github.manosbatsis.domainprimitives.test.common.example.*;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.*;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -58,7 +59,7 @@ public interface SampleEntityRepository extends JpaRepository<SampleEntity, UUID
     List<SampleEntity> findAllByShortBean(ShortBean param);
 
     List<SampleEntity> findAllByShortRecord(ShortRecord param);
-    // Strings
+    //    // Strings
     List<SampleEntity> findAllByStringBean(StringBean param);
 
     List<SampleEntity> findAllByStringRecord(StringRecord param);

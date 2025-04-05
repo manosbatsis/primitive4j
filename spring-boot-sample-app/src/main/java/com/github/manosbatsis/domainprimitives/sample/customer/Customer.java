@@ -14,7 +14,6 @@
  */
 package com.github.manosbatsis.domainprimitives.sample.customer;
 
-import com.github.manosbatsis.domainprimitives.core.AbstractMutableSdp4jType;
 import com.github.manosbatsis.domainprimitives.core.GenerateSdp4jType;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -29,8 +28,7 @@ import lombok.*;
 @GenerateSdp4jType(
         name = "CustomerRef",
         javaDoc = "A business key type dedicated to Customer entities.",
-        valueType = String.class,
-        extend = AbstractMutableSdp4jType.class)
+        valueType = String.class)
 @Builder
 public class Customer {
 

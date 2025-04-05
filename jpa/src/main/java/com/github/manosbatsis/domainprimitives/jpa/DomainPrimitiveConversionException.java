@@ -24,7 +24,8 @@ public class DomainPrimitiveConversionException extends IllegalArgumentException
         return new DomainPrimitiveConversionException("Error converting object to database column value", e);
     }
 
-    static DomainPrimitiveConversionException errorConvertingToEntityAttribute(Class<?> attributeType, Exception e) {
+    public static DomainPrimitiveConversionException errorConvertingToEntityAttribute(
+            Class<?> attributeType, Exception e) {
         return new DomainPrimitiveConversionException(
                 "Error converting database column value to %s object".formatted(attributeType.getCanonicalName()), e);
     }

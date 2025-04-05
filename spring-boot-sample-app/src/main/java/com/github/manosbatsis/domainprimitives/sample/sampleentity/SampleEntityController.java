@@ -15,6 +15,7 @@
 package com.github.manosbatsis.domainprimitives.sample.sampleentity;
 
 import com.github.manosbatsis.domainprimitives.test.common.example.*;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.*;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

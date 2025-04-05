@@ -15,6 +15,10 @@
 package com.github.manosbatsis.domainprimitives.test.common.example;
 
 import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.UriBean;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.UriRecord;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.UrlBean;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.UrlRecord;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -27,22 +31,29 @@ import java.util.stream.Stream;
 
 public class SampleData {
 
-    public record ConvertibleConfig<T extends Serializable>(
-            T value, Class<? extends Sdp4jType<T>>... domainPrimitiveClasses) {
+    public record ConvertibleConfig(
+            Serializable value, Class<? extends Sdp4jType<?>>... domainPrimitiveClasses) {
 
-        public Stream<Convertible<T>> flatten() {
+        public Stream<Convertible> flatten() {
             return Arrays.stream(domainPrimitiveClasses).map(clazz -> toConvertible(value, clazz));
         }
 
-        private Convertible<T> toConvertible(T value, Class<? extends Sdp4jType<T>> clazz) {
-            return new Convertible<>(value, clazz);
+        private Convertible toConvertible(Serializable value, Class<? extends Sdp4jType<?>> clazz) {
+            return new Convertible(value, clazz);
+        }
+
+        @Override
+        public String toString() {
+            return "ConvertibleConfig{" +
+                    "value=" + value +
+                    '}';
         }
     }
 
-    public record Convertible<T extends Serializable>(T value, Class<? extends Sdp4jType<?>> domainPrimitiveClass) {}
+    public record Convertible(Serializable value, Class<? extends Sdp4jType<?>> domainPrimitiveClass) {}
 
     public static Stream<Convertible> convertibles() throws MalformedURLException, URISyntaxException {
-        return convertibleConfigs().flatMap(it -> it.flatten());
+        return convertibleConfigs().flatMap(ConvertibleConfig::flatten);
     }
 
     public static Stream<ConvertibleConfig> convertibleConfigs() throws MalformedURLException, URISyntaxException {

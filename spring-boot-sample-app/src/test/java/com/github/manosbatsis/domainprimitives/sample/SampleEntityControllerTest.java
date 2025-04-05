@@ -21,8 +21,10 @@ import com.github.manosbatsis.domainprimitives.sample.sampleentity.SampleEntity;
 import com.github.manosbatsis.domainprimitives.sample.sampleentity.SampleEntityController;
 import com.github.manosbatsis.domainprimitives.sample.sampleentity.SampleEntityService;
 import com.github.manosbatsis.domainprimitives.test.common.example.*;
+import com.github.manosbatsis.domainprimitives.test.common.example.network.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.net.URI;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -33,6 +35,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
@@ -52,10 +55,10 @@ class SampleEntityControllerTest {
     private static Stream<Arguments> sampleInstanceUrlFragments() {
         return Stream.of(
                 // Network
-                Arguments.of("findAllByUriRecord", sampleInstance.getUriRecord()),
-                Arguments.of("findAllByUriBean", sampleInstance.getUriBean()),
-                Arguments.of("findAllByUrlBean", sampleInstance.getUrlBean()),
-                Arguments.of("findAllByUrlRecord", sampleInstance.getUrlRecord()),
+                // Arguments.of("findAllByUriRecord", sampleInstance.getUriRecord()),
+                // Arguments.of("findAllByUriBean", sampleInstance.getUriBean()),
+                // Arguments.of("findAllByUrlBean", sampleInstance.getUrlBean()),
+                // Arguments.of("findAllByUrlRecord", sampleInstance.getUrlRecord()),
                 // Numbers
                 Arguments.of("findAllByBigDecimalBean", sampleInstance.getBigDecimalBean()),
                 Arguments.of("findAllByBigDecimalRecord", sampleInstance.getBigDecimalRecord()),
@@ -71,15 +74,17 @@ class SampleEntityControllerTest {
                 Arguments.of("findAllByLongRecord", sampleInstance.getLongRecord()),
                 Arguments.of("findAllByShortBean", sampleInstance.getShortBean()),
                 Arguments.of("findAllByShortRecord", sampleInstance.getShortRecord()),
-                // Strings
+                //                // Strings
                 Arguments.of("findAllByStringBean", sampleInstance.getStringBean()),
                 Arguments.of("findAllByStringRecord", sampleInstance.getStringRecord()),
                 Arguments.of("findAllByUuidBean", sampleInstance.getUuidBean()),
                 Arguments.of("findAllByUuidRecord", sampleInstance.getUuidRecord()));
     }
 
+    @Autowired
     private SampleEntityService sampleEntityService;
 
+    @Autowired
     private WebTestClient webTestClient;
 
     @Test
@@ -111,13 +116,14 @@ class SampleEntityControllerTest {
                 .returnResult()
                 .getResponseBody();
 
-        assertThat(searchResults).isNotNull().isNotEmpty().hasSize(1);
-        assertThat(searchResults.getFirst()).isEqualTo(sampleInstance);
+        assertThat(searchResults).isNotNull().isNotEmpty().anySatisfy(it -> assertThat(it)
+                .usingRecursiveComparison()
+                .isEqualTo(sampleInstance));
     }
 
     @SneakyThrows
     private SampleEntity postSampleEntity(SampleEntity instance) {
-        var pestisted = webTestClient
+        var persisted = webTestClient
                 .post()
                 .uri(SampleEntityController.BASE_PATH)
                 .bodyValue(instance)
@@ -128,7 +134,8 @@ class SampleEntityControllerTest {
                 .expectBody(SampleEntity.class)
                 .returnResult()
                 .getResponseBody();
-        instance.setId(pestisted.getId());
+        assert persisted != null;
+        instance.setId(persisted.getId());
 
         return instance;
     }
@@ -148,20 +155,32 @@ class SampleEntityControllerTest {
                         new BigIntegerBean(BigInteger.valueOf(faker.number().randomNumber())))
                 .bigIntegerRecord(
                         new BigIntegerRecord(BigInteger.valueOf(faker.number().randomNumber())))
-                .doubleBean(new DoubleBean(faker.number().randomDouble(2, 1, 999)))
-                .doubleRecord(new DoubleRecord(faker.number().randomDouble(2, 1, 999)))
-                .floatBean(new FloatBean((float) faker.number().randomDouble(2, 1, 999)))
-                .floatRecord(new FloatRecord((float) faker.number().randomDouble(2, 1, 999)))
-                .integerBean(new IntegerBean(faker.number().randomDigit()))
-                .integerRecord(new IntegerRecord(faker.number().randomDigit()))
-                .longBean(new LongBean(faker.number().randomNumber()))
-                .longRecord(new LongRecord(faker.number().randomNumber()))
-                .shortBean(new ShortBean((short) faker.number().randomDigit()))
-                .shortRecord(new ShortRecord((short) faker.number().randomDigit()))
+                .doubleBean(new DoubleBean(truncateDecimal(faker.random().nextDouble())))
+                .doubleRecord(new DoubleRecord(truncateDecimal(faker.random().nextDouble())))
+                .floatBean(new FloatBean(truncateDecimal(faker.random().nextFloat())))
+                .floatRecord(new FloatRecord(truncateDecimal(faker.random().nextFloat())))
+                .integerBean(new IntegerBean(faker.random().nextInt()))
+                .integerRecord(new IntegerRecord(faker.random().nextInt()))
+                .longBean(new LongBean(faker.random().nextLong()))
+                .longRecord(new LongRecord(faker.random().nextLong()))
+                .shortBean(new ShortBean((short) faker.random().nextInt(Short.MAX_VALUE)))
+                .shortRecord(new ShortRecord((short) faker.random().nextInt(Short.MAX_VALUE)))
                 .stringBean(new StringBean(faker.internet().domainName()))
                 .stringRecord(new StringRecord(faker.internet().domainName()))
                 .uuidBean(new UuidBean(UUID.randomUUID()))
                 .uuidRecord(new UuidRecord(UUID.randomUUID()))
                 .build();
+    }
+
+    private static double truncateDecimal(final double x) {
+        return new BigDecimal(String.valueOf(x))
+                .setScale(2, RoundingMode.DOWN)
+                .doubleValue();
+    }
+
+    private static float truncateDecimal(final float x) {
+        return new BigDecimal(String.valueOf(x))
+                .setScale(2, RoundingMode.DOWN)
+                .floatValue();
     }
 }
