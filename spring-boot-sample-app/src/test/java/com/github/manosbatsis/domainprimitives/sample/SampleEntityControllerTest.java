@@ -173,14 +173,10 @@ class SampleEntityControllerTest {
     }
 
     private static double truncateDecimal(final double x) {
-        return new BigDecimal(String.valueOf(x))
-                .setScale(2, RoundingMode.DOWN)
-                .doubleValue();
+        return new BigDecimal(String.valueOf(x)).setScale(2, RoundingMode.DOWN).doubleValue();
     }
 
     private static float truncateDecimal(final float x) {
-        return new BigDecimal(String.valueOf(x))
-                .setScale(2, RoundingMode.DOWN)
-                .floatValue();
+        return new BigDecimal(String.valueOf(x)).setScale(2, RoundingMode.DOWN).floatValue();
     }
 }

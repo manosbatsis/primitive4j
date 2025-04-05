@@ -31,8 +31,7 @@ import java.util.stream.Stream;
 
 public class SampleData {
 
-    public record ConvertibleConfig(
-            Serializable value, Class<? extends Sdp4jType<?>>... domainPrimitiveClasses) {
+    public record ConvertibleConfig(Serializable value, Class<? extends Sdp4jType<?>>... domainPrimitiveClasses) {
 
         public Stream<Convertible> flatten() {
             return Arrays.stream(domainPrimitiveClasses).map(clazz -> toConvertible(value, clazz));
@@ -44,9 +43,7 @@ public class SampleData {
 
         @Override
         public String toString() {
-            return "ConvertibleConfig{" +
-                    "value=" + value +
-                    '}';
+            return "ConvertibleConfig{" + "value=" + value + '}';
         }
     }
 
