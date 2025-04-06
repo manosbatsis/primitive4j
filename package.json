@@ -5,9 +5,9 @@
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "commit-analyzer-fail-on-no-release": "^1.0.1",
-    "semantic-release": "^21.0.7",
-    "semantic-release-replace-plugin": "^1.2.6"
+    "commit-analyzer-fail-on-no-release": "^2.0.0",
+    "semantic-release": "^24.2.3",
+    "semantic-release-replace-plugin": "^1.2.7"
   },
   "release": {
     "branches": ["master"],
@@ -35,7 +35,7 @@
               "files": [
                 "gradle.properties"
               ],
-              "from": "version=.*",
+              "from": "\\bversion=.*",
               "to": "version=${nextRelease.version}",
               "results": [
                 {
