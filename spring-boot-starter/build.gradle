@@ -1,0 +1,8 @@
+
+
+dependencies {
+	api(project(":primitive4j-spring-boot-autoconfigure"))
+	api(project(":primitive4j-core"))
+	api(project(":primitive4j-spring"))
+	api(project(":primitive4j-jpa"))
+}

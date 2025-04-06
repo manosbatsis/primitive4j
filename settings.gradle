@@ -1,0 +1,15 @@
+def prefix(prefix) {
+    rootProject.name = prefix
+    rootProject.children.each { it.name = "${prefix}-${it.name}" }
+}
+
+include("annotation-processor",
+        "core",
+        "jpa",
+        "spring",
+        "spring-boot-autoconfigure",
+        "spring-boot-starter",
+        "spring-boot-sample-app",
+        "test-common")
+
+prefix('primitive4j')

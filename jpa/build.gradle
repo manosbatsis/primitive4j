@@ -1,0 +1,6 @@
+
+
+dependencies {
+	api(project(":primitive4j-core"))
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+}

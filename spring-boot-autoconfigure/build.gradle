@@ -1,0 +1,11 @@
+
+
+dependencies {
+	api(project(":primitive4j-core"))
+	api(project(":primitive4j-spring"))
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-autoconfigure'
+	implementation 'org.springframework.boot:spring-boot-configuration-processor'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
