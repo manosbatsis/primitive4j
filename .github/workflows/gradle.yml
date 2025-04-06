@@ -37,12 +37,22 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
           distribution: 'zulu'
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
       - name: Build with Gradle
         run: ./gradlew build
+
       - name: Semantic Release
+        # if: github.ref == 'refs/heads/master'
         uses: cycjimmy/semantic-release-action@v4
+        with:
+          dry_run: true
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/git
+            commit-analyzer-fail-on-no-release
+            semantic-release-replace-plugin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish to Maven Central
