@@ -10,3 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Features
 
 * initial commit ([18f0729](https://github.com/manosbatsis/primitive4j/commit/18f072926cbd4f78d764b5ab8d8783226c75cebb))
+
+# 1.0.0 (2025-04-06)
+
+
+### Features
+
+* initial commit ([18f0729](https://github.com/manosbatsis/primitive4j/commit/18f072926cbd4f78d764b5ab8d8783226c75cebb))
