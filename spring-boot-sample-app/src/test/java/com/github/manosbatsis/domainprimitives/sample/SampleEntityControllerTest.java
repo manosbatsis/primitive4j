@@ -155,10 +155,14 @@ class SampleEntityControllerTest {
                         new BigIntegerBean(BigInteger.valueOf(faker.number().randomNumber())))
                 .bigIntegerRecord(
                         new BigIntegerRecord(BigInteger.valueOf(faker.number().randomNumber())))
-                .doubleBean(new DoubleBean(truncateDecimal(faker.random().nextDouble())))
-                .doubleRecord(new DoubleRecord(truncateDecimal(faker.random().nextDouble())))
-                .floatBean(new FloatBean(truncateDecimal(faker.random().nextFloat())))
-                .floatRecord(new FloatRecord(truncateDecimal(faker.random().nextFloat())))
+                .doubleBean(new DoubleBean(
+                        truncateDecimal(faker.random().nextDouble()).doubleValue()))
+                .doubleRecord(new DoubleRecord(
+                        truncateDecimal(faker.random().nextDouble()).doubleValue()))
+                .floatBean(new FloatBean(
+                        truncateDecimal(faker.random().nextFloat()).floatValue()))
+                .floatRecord(new FloatRecord(
+                        truncateDecimal(faker.random().nextFloat()).floatValue()))
                 .integerBean(new IntegerBean(faker.random().nextInt()))
                 .integerRecord(new IntegerRecord(faker.random().nextInt()))
                 .longBean(new LongBean(faker.random().nextLong()))
@@ -172,11 +176,8 @@ class SampleEntityControllerTest {
                 .build();
     }
 
-    private static double truncateDecimal(final double x) {
-        return new BigDecimal(String.valueOf(x)).setScale(2, RoundingMode.DOWN).doubleValue();
-    }
-
-    private static float truncateDecimal(final float x) {
-        return new BigDecimal(String.valueOf(x)).setScale(2, RoundingMode.DOWN).floatValue();
+    // Convenience for predictable rounding throughout tiers
+    private static BigDecimal truncateDecimal(final Number x) {
+        return new BigDecimal(String.valueOf(x)).setScale(1, RoundingMode.FLOOR);
     }
 }
