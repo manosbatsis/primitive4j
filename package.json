@@ -32,11 +32,9 @@
         {
           "replacements": [
             {
-              "files": [
-                "gradle.properties"
-              ],
-              "from": "\\bversion=.*",
-              "to": "version=${nextRelease.version}",
+              "files": ["gradle.properties"],
+              "from": "version = .*",
+              "to": "version = ${nextRelease.version}",
               "results": [
                 {
                   "file": "gradle.properties",
