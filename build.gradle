@@ -2,9 +2,12 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
 
 plugins {
 	id 'java'
+	id 'maven-publish'
+	id 'signing'
 	alias(libs.plugins.spring.boot) apply(false)
 	alias(libs.plugins.spotless) apply(false)
 	alias(libs.plugins.freefair.lombok) apply(false)
+	alias(libs.plugins.nexus.publish)
 }
 
 java {
@@ -26,11 +29,19 @@ repositories {
 	mavenCentral()
 }
 
-subprojects() {
+nexusPublishing {
+	repositories {
+		sonatype()
+	}
+}
 
+subprojects() {
+	apply plugin: 'java'
 	apply plugin: 'java-library'
 	apply plugin: 'io.freefair.lombok'
 	apply plugin: 'com.diffplug.spotless'
+	apply plugin: 'maven-publish'
+	apply plugin: 'signing'
 
 	spotless {
 		java {
@@ -59,7 +70,6 @@ subprojects() {
 		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 		testImplementation("org.junit.jupiter:junit-jupiter")
 		testImplementation("org.assertj:assertj-core")
-
 	}
 
 	test {
@@ -69,4 +79,47 @@ subprojects() {
 			events "passed", "skipped", "failed"
 		}
 	}
+
+	java {
+		withJavadocJar()
+		withSourcesJar()
+	}
+
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				from(components.java)
+
+				pom {
+					name = "${project.name}"
+					description = "${rootProject.description}"
+					url = "https://github.com/manosbatsis/${rootProject.name}"
+					licenses{
+						license{
+							name = "GNU LESSER GENERAL PUBLIC LICENSE"
+							url = "https://www.gnu.org/licenses/lgpl-3.0.html"
+						}
+					}
+					developers{
+						developer{
+							id = "manosbatsis"
+							name="Manos Batsis"
+							email="manosbatsis@gmail.com"
+						}
+					}
+					scm {
+						connection = "scm:git:git://github.com/manosbatsis/${rootProject.name}.git"
+						developerConnection = "scm:git:ssh://github.com:manosbatsis/${rootProject.name}.git"
+						url = "https://github.com/manosbatsis/${rootProject.name}"
+					}
+				}
+			}
+		}
+	}
+
+	signing {
+		required = { !version.endsWith("SNAPSHOT") && gradle.taskGraph.hasTask("publish") }
+		sign publishing.publications.mavenJava
+	}
+
 }

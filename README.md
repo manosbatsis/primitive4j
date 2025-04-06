@@ -1,4 +1,7 @@
-# Primitive4J: Simple Domain Primitives for the JVM
+<h1> 
+Primitive4J: Simple Domain Primitives for the JVM 
+[![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/gradle.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/gradle.yml)
+</h1>
 
 Tools to help with simple domain primitives in Java applications, including:
 
