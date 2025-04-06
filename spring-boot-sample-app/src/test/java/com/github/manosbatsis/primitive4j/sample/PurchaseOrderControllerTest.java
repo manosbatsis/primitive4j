@@ -21,7 +21,6 @@ import com.github.manosbatsis.primitive4j.sample.customer.CustomerRef;
 import com.github.manosbatsis.primitive4j.sample.customer.CustomerRepository;
 import com.github.manosbatsis.primitive4j.sample.order.OrderController;
 import com.github.manosbatsis.primitive4j.sample.order.PurchaseOrder;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -30,7 +29,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-@Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 class PurchaseOrderControllerTest {

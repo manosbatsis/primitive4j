@@ -16,12 +16,10 @@ package com.github.manosbatsis.primitive4j.core;
 
 import java.io.Serializable;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @param <I> the primitive wrapped value
  */
-@Slf4j
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -31,7 +29,6 @@ public abstract class AbstractMutableDomainPrimitive<I extends Serializable> imp
 
     protected AbstractMutableDomainPrimitive(I value) {
         this.value = value;
-        log.info("Initialized with {} value: {}", value.getClass().getSimpleName(), value);
     }
 
     @Override

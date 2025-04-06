@@ -23,7 +23,6 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -34,7 +33,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-@Slf4j
 @EnableWebMvc
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest(

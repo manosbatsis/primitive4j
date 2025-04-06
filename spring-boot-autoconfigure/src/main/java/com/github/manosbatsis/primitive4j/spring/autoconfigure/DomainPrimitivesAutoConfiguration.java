@@ -17,7 +17,6 @@ package com.github.manosbatsis.primitive4j.spring.autoconfigure;
 import com.github.manosbatsis.primitive4j.spring.FromDomainPrimitiveGenericConverter;
 import com.github.manosbatsis.primitive4j.spring.StringToDomainPrimitiveConverterFactory;
 import com.github.manosbatsis.primitive4j.spring.ToDomainPrimitiveGenericConverter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +25,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Slf4j
 @Configuration
 @EnableConfigurationProperties(DomainPrimitivesProperties.class)
 public class DomainPrimitivesAutoConfiguration implements WebMvcConfigurer {
@@ -37,7 +35,6 @@ public class DomainPrimitivesAutoConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
-        log.info("Registering formatters");
         registry.addConverter(new FromDomainPrimitiveGenericConverter());
         registry.addConverter(new ToDomainPrimitiveGenericConverter());
         registry.addConverterFactory(new StringToDomainPrimitiveConverterFactory<>(conversionService));

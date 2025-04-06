@@ -16,11 +16,9 @@ package com.github.manosbatsis.primitive4j.spring;
 
 import com.github.manosbatsis.primitive4j.core.DomainPrimitive;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 
-@Slf4j
 @RequiredArgsConstructor
 public class StringToDomainPrimitiveConverter<T extends DomainPrimitive<?>> implements Converter<String, T> {
 
@@ -30,8 +28,6 @@ public class StringToDomainPrimitiveConverter<T extends DomainPrimitive<?>> impl
 
     @Override
     public T convert(String source) {
-        log.info("convert CALLED for value: {}", source);
-
         if (!conversionService.canConvert(source.getClass(), innerValueType)) {
             throw new IllegalArgumentException("Provided conversion service unable to convert from %s to %s"
                     .formatted(source.getClass().getCanonicalName(), innerValueType.getCanonicalName()));

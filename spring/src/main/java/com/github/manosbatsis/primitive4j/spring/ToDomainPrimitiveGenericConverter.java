@@ -18,14 +18,12 @@ import com.github.manosbatsis.primitive4j.core.DomainPrimitive;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalConverter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.lang.Nullable;
 
-@Slf4j
 public class ToDomainPrimitiveGenericConverter implements GenericConverter, ConditionalConverter {
 
     @Override
@@ -37,7 +35,6 @@ public class ToDomainPrimitiveGenericConverter implements GenericConverter, Cond
     @Override
     @Nullable
     public Object convert(@Nullable Object source, TypeDescriptor sourceType, TypeDescriptor targetType) {
-        log.info("convert CALLED for value: {}", source);
         try {
             return Objects.nonNull(source)
                     ? targetType

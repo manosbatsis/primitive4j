@@ -18,13 +18,11 @@ import com.github.manosbatsis.primitive4j.core.DomainPrimitive;
 import java.util.Objects;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.ConditionalConverter;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.lang.Nullable;
 
-@Slf4j
 @RequiredArgsConstructor
 public class FromDomainPrimitiveGenericConverter implements GenericConverter, ConditionalConverter {
 

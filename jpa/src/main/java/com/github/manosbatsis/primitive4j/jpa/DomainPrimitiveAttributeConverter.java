@@ -18,13 +18,11 @@ import com.github.manosbatsis.primitive4j.core.DomainPrimitive;
 import jakarta.persistence.AttributeConverter;
 import java.io.Serializable;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Convenient base class when implementing JPA converters
  * for specific {@link DomainPrimitive} types.
  */
-@Slf4j
 @RequiredArgsConstructor
 public abstract class DomainPrimitiveAttributeConverter<T extends DomainPrimitive<I>, I extends Serializable>
         implements AttributeConverter<T, I> {
@@ -35,12 +33,7 @@ public abstract class DomainPrimitiveAttributeConverter<T extends DomainPrimitiv
     @Override
     public I convertToDatabaseColumn(T attribute) {
         try {
-            var value = attribute.value();
-            log.warn(
-                    "convertToDatabaseColumn from class {} to value: {}",
-                    attribute.getClass().getSimpleName(),
-                    value);
-            return value;
+            return attribute.value();
         } catch (Exception e) {
             throw DomainPrimitiveConversionException.errorConvertingToDatabaseColumn(e);
         }
