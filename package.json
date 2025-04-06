@@ -35,7 +35,7 @@
               "files": [
                 "gradle.properties"
               ],
-              "from": "\\bversion=.*",
+              "from": "version=.*",
               "to": "version=${nextRelease.version}",
               "results": [
                 {

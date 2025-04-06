@@ -85,6 +85,10 @@ subprojects() {
 		withSourcesJar()
 	}
 
+	tasks.withType(Javadoc).configureEach {
+		options.addStringOption('Xdoclint:-missing', '-quiet')
+	}
+
 	publishing {
 		publications {
 			mavenJava(MavenPublication) {
