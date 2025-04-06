@@ -51,15 +51,7 @@ jobs:
             @semantic-release/changelog
             @semantic-release/git
             commit-analyzer-fail-on-no-release
-            semantic-release-replace-plugin
+            gradle-semantic-release-plugin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish to Maven Central
-        if: github.ref == 'refs/heads/master'
-        env:
-          ORG_GRADLE_PROJECT_signingKey: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEY}}
-          ORG_GRADLE_PROJECT_signingKeyId: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGKEYID}}
-          ORG_GRADLE_PROJECT_signingPassword: ${{secrets.ORG_GRADLE_PROJECT_SIGNINGPASSWORD}}
-          ORG_GRADLE_PROJECT_sonatypeUsername: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEUSERNAME}}
-          ORG_GRADLE_PROJECT_sonatypePassword: ${{secrets.ORG_GRADLE_PROJECT_SONATYPEPASSWORD}}
-        run: ./gradlew clean build -x test publishToSonatype closeAndReleaseSonatypeStagingRepository
+

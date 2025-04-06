@@ -13,28 +13,15 @@
       }
     ],
     [
-      "semantic-release-replace-plugin",
-      {
-        "replacements": [
-          {
-            "files": [
-              "gradle.properties"
-            ],
-            "from": "version=.*",
-            "to": "version=${nextRelease.version}",
-            "dry": true,
-            "results": [
-              {
-                "file": "gradle.properties",
-                "hasChanged": true,
-                "numMatches": 1,
-                "numReplacements": 1
-              }
-            ],
-            "countMatches": true
-          }
-        ]
-      }
+      "gradle-semantic-release-plugin",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "gradle.properties"
+          ]
+        }
+      ]
     ],
     [
       "@semantic-release/git",
