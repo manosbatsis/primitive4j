@@ -44,10 +44,9 @@ jobs:
         run: ./gradlew build
 
       - name: Semantic Release
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         uses: cycjimmy/semantic-release-action@v4
         with:
-          dry_run: true
           extra_plugins: |
             @semantic-release/changelog
             @semantic-release/git
