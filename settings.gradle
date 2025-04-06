@@ -12,4 +12,4 @@ include("annotation-processor",
         "spring-boot-sample-app",
         "test-common")
 
-prefix('sdp4j')
+prefix('primitive4j')

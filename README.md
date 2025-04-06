@@ -158,7 +158,7 @@ e.g. a `Customer` request/response body will include it's `CustomerRef` like sho
 
 ### Spring Converters
 
-The `sdp4j-spring` and, consequently `sdp4j-spring-boot-starter` modules include and autoconfigure Spring 
+The `primitive4j-spring` and, consequently `primitive4j-spring-boot-starter` modules include and autoconfigure Spring 
 conversion service components for your simple domain primitives. Between other things, this completes automated 
 conversions for controller methods, for example:
 

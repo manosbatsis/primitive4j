@@ -118,12 +118,12 @@ class ConversionServiceTest {
                 .isTrue();
 
         // Assert our primitives work as expected
-        Sdp4jType<T> sdp4jType =
+        Sdp4jType<T> primitive4jType =
                 domainPrimitiveClass.getConstructor(expectedValueClass).newInstance(wrappedValue);
-        assertThat(sdp4jType.value()).isEqualTo(wrappedValue);
+        assertThat(primitive4jType.value()).isEqualTo(wrappedValue);
 
         // Assert conversion is accurate
-        var actualConversionResult = conversionService.convert(sdp4jType, wrappedValue.getClass());
+        var actualConversionResult = conversionService.convert(primitive4jType, wrappedValue.getClass());
         assertThat(actualConversionResult).isNotNull().isEqualTo(wrappedValue);
     }
 }

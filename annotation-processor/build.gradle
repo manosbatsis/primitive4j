@@ -1,7 +1,7 @@
 
 
 dependencies {
-	api(project(":sdp4j-core"))
-	api(project(":sdp4j-spring"))
-	api(project(":sdp4j-jpa"))
+	api(project(":primitive4j-core"))
+	api(project(":primitive4j-spring"))
+	api(project(":primitive4j-jpa"))
 }

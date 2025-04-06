@@ -56,19 +56,20 @@ public final class Sdp4jTypeAnnotationProcessor extends AbstractProcessor {
                 roundEnv.getElementsAnnotatedWithAny(Set.of(GenerateSdp4jType.class, GenerateSdp4jTypes.class));
         for (var element : elements) {
             var annotatedTypeElement = (TypeElement) element;
-            var sdp4jTypes = annotatedTypeElement.getAnnotationsByType(GenerateSdp4jType.class);
-            for (var sdp4jType : sdp4jTypes) {
-                if (generateSdp4j(element, sdp4jType, annotatedTypeElement)) return true;
+            var primitive4jTypes = annotatedTypeElement.getAnnotationsByType(GenerateSdp4jType.class);
+            for (var primitive4jType : primitive4jTypes) {
+                if (generateSdp4j(element, primitive4jType, annotatedTypeElement)) return true;
             }
         }
         return true;
     }
 
-    private boolean generateSdp4j(Element element, GenerateSdp4jType sdp4jType, TypeElement annotatedTypeElement) {
+    private boolean generateSdp4j(
+            Element element, GenerateSdp4jType primitive4jType, TypeElement annotatedTypeElement) {
 
         var filer = this.processingEnv.getFiler();
         var messager = this.processingEnv.getMessager();
-        var annotationContext = buildAnnotationContext(annotatedTypeElement, sdp4jType);
+        var annotationContext = buildAnnotationContext(annotatedTypeElement, primitive4jType);
         if (annotationContext.isInvalid(messager)) {
             return true;
         }
@@ -209,10 +210,10 @@ public final class Sdp4jTypeAnnotationProcessor extends AbstractProcessor {
         return sb.toString();
     }
 
-    private static String getGeneratedTypeAnnotations(Sdp4jTypeContext sdp4jTypeContext) {
-        if (sdp4jTypeContext.generateOpenApi) {
+    private static String getGeneratedTypeAnnotations(Sdp4jTypeContext primitive4jTypeContext) {
+        if (primitive4jTypeContext.generateOpenApi) {
             return "@Schema(implementation = %s.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc."
-                    .formatted(sdp4jTypeContext.valueTypeSimpleName);
+                    .formatted(primitive4jTypeContext.valueTypeSimpleName);
         } else {
             return "";
         }
@@ -246,7 +247,7 @@ public final class Sdp4jTypeAnnotationProcessor extends AbstractProcessor {
         return value.replaceAll("[\n\r]$", "");
     }
 
-    private String getGeneratedConstructor(Sdp4jTypeContext sdp4jTypeContext) {
+    private String getGeneratedConstructor(Sdp4jTypeContext primitive4jTypeContext) {
         var template =
                 """
                     /**
@@ -260,27 +261,29 @@ public final class Sdp4jTypeAnnotationProcessor extends AbstractProcessor {
                     }
                 """;
         return removeTrailingNewLines(template.formatted(
-                sdp4jTypeContext.generateJackson ? "\n    @JsonCreator // Used by Jackson when deserializing" : "",
-                sdp4jTypeContext.getGeneratedClassSimpleName(),
-                sdp4jTypeContext.getValueTypeSimpleName()));
+                primitive4jTypeContext.generateJackson
+                        ? "\n    @JsonCreator // Used by Jackson when deserializing"
+                        : "",
+                primitive4jTypeContext.getGeneratedClassSimpleName(),
+                primitive4jTypeContext.getValueTypeSimpleName()));
     }
 
-    private static ImportsHelper getGeneratedImports(Sdp4jTypeContext sdp4jTypeContext) {
+    private static ImportsHelper getGeneratedImports(Sdp4jTypeContext primitive4jTypeContext) {
         ImportsHelper importsHelper = new ImportsHelper()
                 .addImport(Sdp4jType.class.getCanonicalName())
-                .addImport(sdp4jTypeContext.extendClassName);
-        if (sdp4jTypeContext.generateOpenApi) {
+                .addImport(primitive4jTypeContext.extendClassName);
+        if (primitive4jTypeContext.generateOpenApi) {
             importsHelper.addImport("io.swagger.v3.oas.annotations.media.Schema");
         }
         // Import value type id if needed
-        if (!sdp4jTypeContext.valueClassName.startsWith("java.lang")) {
-            importsHelper.addImport(sdp4jTypeContext.valueClassName);
+        if (!primitive4jTypeContext.valueClassName.startsWith("java.lang")) {
+            importsHelper.addImport(primitive4jTypeContext.valueClassName);
         }
         // Import JsonCreator if needed
-        if (!sdp4jTypeContext.extendClassIsInterface && sdp4jTypeContext.generateJackson) {
+        if (!primitive4jTypeContext.extendClassIsInterface && primitive4jTypeContext.generateJackson) {
             importsHelper.addImport("com.fasterxml.jackson.annotation.JsonCreator");
         }
-        if (sdp4jTypeContext.generateJpa) {
+        if (primitive4jTypeContext.generateJpa) {
             importsHelper
                     .addImport("com.github.manosbatsis.domainprimitives.jpa.DomainPrimitiveAttributeConverter")
                     .addImport("jakarta.persistence.Converter");
