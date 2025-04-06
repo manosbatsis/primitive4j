@@ -25,6 +25,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.CLASS)
-public @interface GenerateSdp4jTypes {
-    GenerateSdp4jType[] value();
+public @interface GeneratePrimitives {
+    GeneratePrimitive[] value();
 }

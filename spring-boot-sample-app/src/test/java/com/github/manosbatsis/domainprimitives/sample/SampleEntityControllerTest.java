@@ -16,7 +16,7 @@ package com.github.manosbatsis.domainprimitives.sample;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
+import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
 import com.github.manosbatsis.domainprimitives.sample.sampleentity.SampleEntity;
 import com.github.manosbatsis.domainprimitives.sample.sampleentity.SampleEntityController;
 import com.github.manosbatsis.domainprimitives.sample.sampleentity.SampleEntityService;
@@ -96,7 +96,7 @@ class SampleEntityControllerTest {
 
     @ParameterizedTest(name = "Search {0}")
     @MethodSource("sampleInstanceUrlFragments")
-    void shouldBeAbleToSearchByAnySimplePrimitiveProperty(String pathFragment, Sdp4jType<?> valueFragment) {
+    void shouldBeAbleToSearchByAnySimplePrimitiveProperty(String pathFragment, DomainPrimitive<?> valueFragment) {
         // Create an entity instance with fixed random values
         sampleEntityService.save(sampleInstance);
 
@@ -148,9 +148,9 @@ class SampleEntityControllerTest {
                 .urlBean(new UrlBean(new URI(faker.internet().url()).toURL()))
                 .urlRecord(new UrlRecord(new URI(faker.internet().url()).toURL()))
                 .bigDecimalBean(
-                        new BigDecimalBean(BigDecimal.valueOf(faker.number().randomDouble(2, 1, 999))))
+                        new BigDecimalBean(BigDecimal.valueOf(faker.number().randomDouble(1, 1, 999))))
                 .bigDecimalRecord(
-                        new BigDecimalRecord(BigDecimal.valueOf(faker.number().randomDouble(2, 1, 999))))
+                        new BigDecimalRecord(BigDecimal.valueOf(faker.number().randomDouble(1, 1, 999))))
                 .bigIntegerBean(
                         new BigIntegerBean(BigInteger.valueOf(faker.number().randomNumber())))
                 .bigIntegerRecord(
@@ -176,7 +176,6 @@ class SampleEntityControllerTest {
                 .build();
     }
 
-    // Convenience for predictable rounding throughout tiers
     private static BigDecimal truncateDecimal(final Number x) {
         return new BigDecimal(String.valueOf(x)).setScale(1, RoundingMode.FLOOR);
     }

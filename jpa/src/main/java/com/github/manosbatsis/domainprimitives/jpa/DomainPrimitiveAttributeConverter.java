@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.jpa;
 
-import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
+import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
 import jakarta.persistence.AttributeConverter;
 import java.io.Serializable;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * Convenient base class when implementing JPA converters
- * for specific {@link Sdp4jType} types.
+ * for specific {@link DomainPrimitive} types.
  */
 @Slf4j
 @RequiredArgsConstructor
-public abstract class DomainPrimitiveAttributeConverter<T extends Sdp4jType<I>, I extends Serializable>
+public abstract class DomainPrimitiveAttributeConverter<T extends DomainPrimitive<I>, I extends Serializable>
         implements AttributeConverter<T, I> {
 
     private final Class<T> attributeType;

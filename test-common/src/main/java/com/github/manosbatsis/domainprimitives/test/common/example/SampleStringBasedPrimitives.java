@@ -14,14 +14,14 @@
  */
 package com.github.manosbatsis.domainprimitives.test.common.example;
 
-import com.github.manosbatsis.domainprimitives.core.AbstractMutableSdp4jType;
-import com.github.manosbatsis.domainprimitives.core.GenerateSdp4jType;
+import com.github.manosbatsis.domainprimitives.core.AbstractMutableDomainPrimitive;
+import com.github.manosbatsis.domainprimitives.core.GeneratePrimitive;
 import jakarta.persistence.MappedSuperclass;
 import java.util.UUID;
 
-@GenerateSdp4jType(name = "StringBean", valueType = String.class, extend = AbstractMutableSdp4jType.class)
-@GenerateSdp4jType(name = "StringRecord", valueType = String.class)
-@GenerateSdp4jType(name = "UuidBean", valueType = UUID.class, extend = AbstractMutableSdp4jType.class)
-@GenerateSdp4jType(name = "UuidRecord", valueType = UUID.class)
+@GeneratePrimitive(name = "StringBean", valueType = String.class, extend = AbstractMutableDomainPrimitive.class)
+@GeneratePrimitive(name = "StringRecord", valueType = String.class)
+@GeneratePrimitive(name = "UuidBean", valueType = UUID.class, extend = AbstractMutableDomainPrimitive.class)
+@GeneratePrimitive(name = "UuidRecord", valueType = UUID.class)
 @MappedSuperclass // Trigger JPA code generation
 public class SampleStringBasedPrimitives {}

@@ -15,14 +15,14 @@
 package com.github.manosbatsis.domainprimitives.test.common.example.network;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.github.manosbatsis.domainprimitives.core.AbstractMutableSdp4jType;
+import com.github.manosbatsis.domainprimitives.core.AbstractMutableDomainPrimitive;
 import com.github.manosbatsis.domainprimitives.jpa.DomainPrimitiveConversionException;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import java.net.URI;
 import java.net.URL;
 
-public class UrlBean extends AbstractMutableSdp4jType<URL> {
+public class UrlBean extends AbstractMutableDomainPrimitive<URL> {
 
     /**
      * Subtypes of DomainPrimitive must have a single argument constructor

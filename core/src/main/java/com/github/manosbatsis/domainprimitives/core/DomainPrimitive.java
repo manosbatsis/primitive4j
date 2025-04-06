@@ -12,14 +12,18 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.domainprimitives.annotationprocessor;
+package com.github.manosbatsis.domainprimitives.core;
 
-import java.io.IOException;
-import lombok.experimental.StandardException;
+import com.fasterxml.jackson.annotation.JsonValue;
+import java.io.Serializable;
 
-@StandardException
-public class Sdp4jTypeGenerationException extends RuntimeException {
-    static Sdp4jTypeGenerationException couldNotWriteFile(IOException e) {
-        throw new Sdp4jTypeGenerationException("Could not write Java file for domain primitive", e);
-    }
+/**
+ * Base interface for dedicated wrapper types of common value-objects.
+ *
+ * @param <I> the wrapped, inner value type
+ */
+public interface DomainPrimitive<I extends Serializable> extends Serializable {
+
+    @JsonValue
+    I value();
 }

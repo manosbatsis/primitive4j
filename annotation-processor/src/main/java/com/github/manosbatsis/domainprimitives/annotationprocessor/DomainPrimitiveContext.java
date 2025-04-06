@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.annotationprocessor;
 
-import com.github.manosbatsis.domainprimitives.core.GenerateSdp4jType;
+import com.github.manosbatsis.domainprimitives.core.GeneratePrimitive;
 import javax.annotation.processing.Messager;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.PackageElement;
@@ -25,8 +25,8 @@ import lombok.Getter;
 
 @Getter
 @Builder
-class Sdp4jTypeContext {
-    GenerateSdp4jType annotation;
+class DomainPrimitiveContext {
+    GeneratePrimitive annotation;
     TypeElement annotatedTypeElement;
     Element enclosingElement;
     String extendClassName;

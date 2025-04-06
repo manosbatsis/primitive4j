@@ -20,12 +20,12 @@ import java.lang.annotation.*;
  * Used to automatically generate domain primitive types.
  *
  * <p>The generated class can also extend another class provided that other class is an extensible
- * subtype of {@link Sdp4jType} and has a single-arg constructor.
+ * subtype of {@link DomainPrimitive} and has a single-arg constructor.
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.CLASS)
-@Repeatable(GenerateSdp4jTypes.class)
-public @interface GenerateSdp4jType {
+@Repeatable(GeneratePrimitives.class)
+public @interface GeneratePrimitive {
 
     /** The class name of the generated domain primitive. */
     String name();
@@ -36,13 +36,13 @@ public @interface GenerateSdp4jType {
     /**
      * A class for the generated interface or abstract class to implement or extend respectively.
      *
-     * <p>Using the default value of {@link Sdp4jType} or a sub-interface produces a record type.
-     * A concrete type like{@link AbstractSdp4jType} will produce a regular, read-only POJO.
+     * <p>Using the default value of {@link DomainPrimitive} or a sub-interface produces a record type.
+     * A concrete type like{@link AbstractDomainPrimitive} will produce a regular, read-only POJO.
      *
      * <p>Concrete types must have a single generic parameter and a constructor with a single argument
      * of the same type.
      */
-    Class<?> extend() default Sdp4jType.class;
+    Class<?> extend() default DomainPrimitive.class;
 
     /** The type-level javadoc to add */
     String javaDoc() default "";

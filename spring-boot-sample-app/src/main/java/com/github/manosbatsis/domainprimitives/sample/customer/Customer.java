@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.sample.customer;
 
-import com.github.manosbatsis.domainprimitives.core.GenerateSdp4jType;
+import com.github.manosbatsis.domainprimitives.core.GeneratePrimitive;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import java.util.UUID;
@@ -25,7 +25,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@GenerateSdp4jType(
+@GeneratePrimitive(
         name = "CustomerRef",
         javaDoc = "A business key type dedicated to Customer entities.",
         valueType = String.class)

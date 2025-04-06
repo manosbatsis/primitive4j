@@ -14,14 +14,14 @@
  */
 package com.github.manosbatsis.domainprimitives.test.common.example.network;
 
-import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
+import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
 import com.github.manosbatsis.domainprimitives.jpa.DomainPrimitiveConversionException;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import java.net.URI;
 import java.net.URL;
 
-public record UrlRecord(URL value) implements Sdp4jType<URL> {
+public record UrlRecord(URL value) implements DomainPrimitive<URL> {
 
     /**
      * A JPA converter for {@link UrlRecord}

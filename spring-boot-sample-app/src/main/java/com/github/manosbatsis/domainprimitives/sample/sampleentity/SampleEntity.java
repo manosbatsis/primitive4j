@@ -46,10 +46,10 @@ public class SampleEntity {
     private UrlRecord urlRecord;
 
     // Number value types
-    @Column(columnDefinition = "decimal(10,2)", nullable = false)
+    @Column(columnDefinition = "decimal(10,1)", nullable = false)
     private BigDecimalBean bigDecimalBean;
 
-    @Column(columnDefinition = "decimal(10,2)", nullable = false)
+    @Column(columnDefinition = "decimal(10,1)", nullable = false)
     private BigDecimalRecord bigDecimalRecord;
 
     @Column(columnDefinition = "bigint", nullable = false)
@@ -58,16 +58,16 @@ public class SampleEntity {
     @Column(columnDefinition = "bigint", nullable = false)
     private BigIntegerRecord bigIntegerRecord;
 
-    @Column(columnDefinition = "decimal(10,2)", nullable = false)
+    @Column(columnDefinition = "decimal(10,1)", nullable = false)
     private DoubleBean doubleBean;
 
-    @Column(columnDefinition = "decimal(10,2)", nullable = false)
+    @Column(columnDefinition = "decimal(10,1)", nullable = false)
     private DoubleRecord doubleRecord;
 
-    @Column(columnDefinition = "decimal(10,2)", nullable = false)
+    @Column(columnDefinition = "decimal(10,1)", nullable = false)
     private FloatBean floatBean;
 
-    @Column(columnDefinition = "decimal(10,2)", nullable = false)
+    @Column(columnDefinition = "decimal(10,1)", nullable = false)
     private FloatRecord floatRecord;
 
     @Column(columnDefinition = "int", nullable = false)

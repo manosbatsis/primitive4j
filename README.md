@@ -1,4 +1,4 @@
-# Simple Domain Primitives for the JVM
+# Primitive4J: Simple Domain Primitives for the JVM
 
 Tools to help with simple domain primitives in Java applications, including:
 
@@ -29,7 +29,7 @@ In Domain-Driven Design (DDD), entity identifiers are essential. Most developers
 simple types but, while these basic types work, they can lead to bugs or confusing code.
 That’s where strongly typed identifiers can make your code safer, clearer, and easier to maintain.
 
-Example using simple type (String) references and language primitives:
+Example before using domain primitives, i.e. using simple type (String) references and language primitives:
 
 ```java
 
@@ -117,13 +117,13 @@ This repo includes a number of utilities to help you with simple domain primitiv
 
 ### Abstract Types
 
-The core library comes with `Sdp4jType`, `AbstractSdp4jType` and 
-`AbstractMutableSdp4jType` which you can implement or extend i.e.:
+The core library comes with `DomainPrimitive`, `AbstractDomainPrimitive` and 
+`AbstractMutableDomainPrimitive` which you can implement or extend i.e.:
 
 ```java
 /** ... */
 @Schema(implementation = String.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc.
-public record CustomerRef(String value) implements Sdp4jType<String> {
+public record CustomerRef(String value) implements DomainPrimitive<String> {
     // ...
 }
 ```
@@ -133,7 +133,7 @@ or:
 ```java
 /** ... */
 @Schema(implementation = String.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc.
-public class CustomerRef extends AbstractMutableSdp4jType<String> {
+public class CustomerRef extends AbstractMutableDomainPrimitive<String> {
 
     /** ... */
     @JsonCreator // Used by Jackson when deserializing
@@ -145,7 +145,7 @@ public class CustomerRef extends AbstractMutableSdp4jType<String> {
 
 ### Jackson (De)Serialization
 
-If Jackson is present, your SDP4J value objects  will be (d)serialized back and from the simple types they wrap, 
+If Jackson is present, your domain primitives will be (d)serialized back and from the simple types they wrap, 
 e.g. a `Customer` request/response body will include it's `CustomerRef` like shown bellow:
 
 ```json5
@@ -158,7 +158,7 @@ e.g. a `Customer` request/response body will include it's `CustomerRef` like sho
 
 ### Spring Converters
 
-The `primitive4j-spring` and, consequently `primitive4j-spring-boot-starter` modules include and autoconfigure Spring 
+The `primitive4j-spring` and `primitive4j-spring-boot-starter` modules include and autoconfigure Spring 
 conversion service components for your simple domain primitives. Between other things, this completes automated 
 conversions for controller methods, for example:
 
@@ -172,7 +172,7 @@ POST https://foobar/api/orders/1f4250b3-2763-416b-a466-ff4950ba15a7
 
 ```
 
-is simply handled like:
+may be handled like:
 
 ```java
 @PutMapping("{id}")
@@ -184,7 +184,7 @@ ResponseEntity<Order> update(@RequestBody OrderDto order, @PathVariable OrderId 
 
 ## Troubleshooting
 
-### Can Simple Domain Primitives be used with JPA (Hibernate/EclipseLink) @Id anmnotations?
+### Can Simple Domain Primitives be used with JPA (Hibernate/EclipseLink) @Id annotations?
 
 In short, no. Not at the moment at least, as the current implementation is based on JPA Attribute Converters. 
 According to the JPA 2.2 spec (10.6):
@@ -201,4 +201,4 @@ Furthermore, section 3.8 of the same spec reads:
 > converters to such attributes through use of the Convert annotation will not be portable.
 
 If you want to create a simple primitive for a primary key, you might want to consider a user type instead.
-If you want more support for this in SDP4J, please create an issue.
+If you want more support for this, please create an issue.

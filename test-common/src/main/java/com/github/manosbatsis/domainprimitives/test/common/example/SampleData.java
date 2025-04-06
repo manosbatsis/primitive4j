@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.test.common.example;
 
-import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
+import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
 import com.github.manosbatsis.domainprimitives.test.common.example.network.UriBean;
 import com.github.manosbatsis.domainprimitives.test.common.example.network.UriRecord;
 import com.github.manosbatsis.domainprimitives.test.common.example.network.UrlBean;
@@ -31,13 +31,13 @@ import java.util.stream.Stream;
 
 public class SampleData {
 
-    public record ConvertibleConfig(Serializable value, Class<? extends Sdp4jType<?>>... domainPrimitiveClasses) {
+    public record ConvertibleConfig(Serializable value, Class<? extends DomainPrimitive<?>>... domainPrimitiveClasses) {
 
         public Stream<Convertible> flatten() {
             return Arrays.stream(domainPrimitiveClasses).map(clazz -> toConvertible(value, clazz));
         }
 
-        private Convertible toConvertible(Serializable value, Class<? extends Sdp4jType<?>> clazz) {
+        private Convertible toConvertible(Serializable value, Class<? extends DomainPrimitive<?>> clazz) {
             return new Convertible(value, clazz);
         }
 
@@ -47,7 +47,7 @@ public class SampleData {
         }
     }
 
-    public record Convertible(Serializable value, Class<? extends Sdp4jType<?>> domainPrimitiveClass) {}
+    public record Convertible(Serializable value, Class<? extends DomainPrimitive<?>> domainPrimitiveClass) {}
 
     public static Stream<Convertible> convertibles() throws MalformedURLException, URISyntaxException {
         return convertibleConfigs().flatMap(ConvertibleConfig::flatten);

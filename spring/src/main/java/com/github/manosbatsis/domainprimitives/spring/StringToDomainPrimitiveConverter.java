@@ -14,7 +14,7 @@
  */
 package com.github.manosbatsis.domainprimitives.spring;
 
-import com.github.manosbatsis.domainprimitives.core.Sdp4jType;
+import com.github.manosbatsis.domainprimitives.core.DomainPrimitive;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionService;
@@ -22,7 +22,7 @@ import org.springframework.core.convert.converter.Converter;
 
 @Slf4j
 @RequiredArgsConstructor
-public class StringToDomainPrimitiveConverter<T extends Sdp4jType<?>> implements Converter<String, T> {
+public class StringToDomainPrimitiveConverter<T extends DomainPrimitive<?>> implements Converter<String, T> {
 
     private final Class<T> targetType;
     private final Class<?> innerValueType;

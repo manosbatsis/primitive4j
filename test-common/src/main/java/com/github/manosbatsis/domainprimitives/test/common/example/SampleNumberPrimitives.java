@@ -14,25 +14,25 @@
  */
 package com.github.manosbatsis.domainprimitives.test.common.example;
 
-import com.github.manosbatsis.domainprimitives.core.AbstractMutableSdp4jType;
-import com.github.manosbatsis.domainprimitives.core.GenerateSdp4jType;
+import com.github.manosbatsis.domainprimitives.core.AbstractMutableDomainPrimitive;
+import com.github.manosbatsis.domainprimitives.core.GeneratePrimitive;
 import jakarta.persistence.MappedSuperclass;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-@GenerateSdp4jType(name = "BigDecimalBean", valueType = BigDecimal.class, extend = AbstractMutableSdp4jType.class)
-@GenerateSdp4jType(name = "BigDecimalRecord", valueType = BigDecimal.class)
-@GenerateSdp4jType(name = "BigIntegerBean", valueType = BigInteger.class, extend = AbstractMutableSdp4jType.class)
-@GenerateSdp4jType(name = "BigIntegerRecord", valueType = BigInteger.class)
-@GenerateSdp4jType(name = "DoubleBean", valueType = Double.class, extend = AbstractMutableSdp4jType.class)
-@GenerateSdp4jType(name = "DoubleRecord", valueType = Double.class)
-@GenerateSdp4jType(name = "FloatBean", valueType = Float.class, extend = AbstractMutableSdp4jType.class)
-@GenerateSdp4jType(name = "FloatRecord", valueType = Float.class)
-@GenerateSdp4jType(name = "IntegerBean", valueType = Integer.class, extend = AbstractMutableSdp4jType.class)
-@GenerateSdp4jType(name = "IntegerRecord", valueType = Integer.class)
-@GenerateSdp4jType(name = "LongBean", valueType = Long.class, extend = AbstractMutableSdp4jType.class)
-@GenerateSdp4jType(name = "LongRecord", valueType = Long.class)
-@GenerateSdp4jType(name = "ShortBean", valueType = Short.class, extend = AbstractMutableSdp4jType.class)
-@GenerateSdp4jType(name = "ShortRecord", valueType = Short.class)
+@GeneratePrimitive(name = "BigDecimalBean", valueType = BigDecimal.class, extend = AbstractMutableDomainPrimitive.class)
+@GeneratePrimitive(name = "BigDecimalRecord", valueType = BigDecimal.class)
+@GeneratePrimitive(name = "BigIntegerBean", valueType = BigInteger.class, extend = AbstractMutableDomainPrimitive.class)
+@GeneratePrimitive(name = "BigIntegerRecord", valueType = BigInteger.class)
+@GeneratePrimitive(name = "DoubleBean", valueType = Double.class, extend = AbstractMutableDomainPrimitive.class)
+@GeneratePrimitive(name = "DoubleRecord", valueType = Double.class)
+@GeneratePrimitive(name = "FloatBean", valueType = Float.class, extend = AbstractMutableDomainPrimitive.class)
+@GeneratePrimitive(name = "FloatRecord", valueType = Float.class)
+@GeneratePrimitive(name = "IntegerBean", valueType = Integer.class, extend = AbstractMutableDomainPrimitive.class)
+@GeneratePrimitive(name = "IntegerRecord", valueType = Integer.class)
+@GeneratePrimitive(name = "LongBean", valueType = Long.class, extend = AbstractMutableDomainPrimitive.class)
+@GeneratePrimitive(name = "LongRecord", valueType = Long.class)
+@GeneratePrimitive(name = "ShortBean", valueType = Short.class, extend = AbstractMutableDomainPrimitive.class)
+@GeneratePrimitive(name = "ShortRecord", valueType = Short.class)
 @MappedSuperclass // Trigger JPA code generation
 public class SampleNumberPrimitives {}
