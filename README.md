@@ -25,17 +25,12 @@ Examples of simple domain primitives are dedicated typed identifiers, references
 
 ## Quick Example
 
-In Domain-Driven Design (DDD), entity identifiers are essential. Most developers are familiar with using
-simple types but, while these basic types work, they can lead to bugs or confusing code.
-That’s where strongly typed identifiers can make your code safer, clearer, and easier to maintain.
-
 Example before using domain primitives, i.e. using simple type (String) references and language primitives:
 
 ```java
 
 public class Order {
     // ...
-    private String id;
     private String customerRef;
     private Float packagedWeightGrams;
     // ...
@@ -54,15 +49,14 @@ Same example after introducing typed references and other domain primitives:
 
 public class Order {
     // ...
-    private OrderId id;
-    private CustomerId customerRef;
+    private CustomerRef customerRef;
     private WeightInGrams packagedWeight;
     // ...
 }
 
 public class Customer {
     // ...
-    private CustomerId ref;
+    private CustomerRef ref;
     // ...
 }
 ```
