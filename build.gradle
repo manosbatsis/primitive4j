@@ -144,8 +144,8 @@ jreleaser {
 					subprojects.forEach { subproject ->
 						stagingRepositories.add("${subproject.layout.buildDirectory.get()}/staging-deploy")
 					}
-					retryDelay: 60
-					maxRetries: 80
+					retryDelay = 60
+					maxRetries = 80
 				}
 			}
 		}
