@@ -52,6 +52,7 @@ jobs:
             @semantic-release/git
             commit-analyzer-fail-on-no-release
             @google/semantic-release-replace-plugin
+            @semantic-release/exec
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JRELEASER_GPG_PASSPHRASE: ${{ secrets.JRELEASER_GPG_PASSPHRASE }}
