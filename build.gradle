@@ -9,7 +9,7 @@ plugins {
 	alias(libs.plugins.freefair.lombok) apply(false)
 	alias(libs.plugins.jreleaser)
 }
-version = "1.0.4"
+version = "1.0.5"
 
 java {
 	toolchain {
