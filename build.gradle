@@ -94,6 +94,9 @@ subprojects() {
 
 				pom {
 					name = "${project.name}"
+					groupId = rootProject.group.toString()
+					artifactId = project.name
+					version = rootProject.version.toString()
 					description = "${rootProject.description}"
 					url = "https://github.com/manosbatsis/${rootProject.name}"
 					licenses{
@@ -136,10 +139,30 @@ jreleaser {
 			mavenCentral {
 				sonatype {
 					active = 'RELEASE'
+					applyMavenCentralRules = true
 					url = 'https://central.sonatype.com/api/v1/publisher'
 					subprojects.forEach { subproject ->
 						stagingRepositories.add("${subproject.layout.buildDirectory.get()}/staging-deploy")
 					}
+					retryDelay: 60
+					maxRetries: 80
+				}
+			}
+		}
+	}
+	distributions {
+		subprojects.forEach { subproject ->
+			register(subproject.name) {
+				artifact {
+					path.set(subproject.tasks.named<Jar>("jar").get().archiveFile.get().asFile)
+				}
+				artifact {
+					path.set(subproject.tasks.named<Jar>("sourcesJar").get().archiveFile.get().asFile)
+					platform.set("java-sources")
+				}
+				artifact {
+					path.set(subproject.tasks.named<Jar>("javadocJar").get().archiveFile.get().asFile)
+					platform.set("java-docs")
 				}
 			}
 		}
