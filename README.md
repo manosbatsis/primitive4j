@@ -1,20 +1,22 @@
-<h1>Primitive4J: Simple Domain Primitives for the JVM ![Maven Central Version](https://img.shields.io/maven-central/v/com.github.manosbatsis.primitive4j/primitive4j-spring-boot-starter) [![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml)</h1>
+# Primitive4J: Simple Domain Primitives for the JVM ![Maven Central Version](https://img.shields.io/maven-central/v/com.github.manosbatsis.primitive4j/primitive4j-spring-boot-starter) [![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml)
 
 Tools to help with simple domain primitives in Java applications, including:
 
 <!-- TOC -->
-  * [What Are Domain Primitives?](#what-are-domain-primitives)
-  * [Quick Example](#quick-example)
-  * [Benefits of Domain Primitives](#benefits-of-domain-primitives)
-    * [Type Safety](#type-safety)
-    * [Logical Dependencies Become Physical](#logical-dependencies-become-physical)
-    * [Representation, Validation and Other Logic](#representation-validation-and-other-logic)
-  * [What's Included?](#whats-included)
-    * [Abstract Types](#abstract-types)
-    * [Spring Converters](#spring-converters)
-    * [JPA Conversion](#jpa-conversion)
-  * [Troubleshooting](#troubleshooting)
-    * [Can Simple Domain Primitives be used with JPA (Hibernate/EclipseLink) @Id annotations?](#can-simple-domain-primitives-be-used-with-jpa-hibernateeclipselink-id-annotations)
+* [What Are Domain Primitives?](#what-are-domain-primitives)
+* [Quick Example](#quick-example)
+* [Benefits of Domain Primitives](#benefits-of-domain-primitives)
+  * [Type Safety](#type-safety)
+  * [Logical Dependencies Become Physical](#logical-dependencies-become-physical)
+  * [Representation, Validation and Other Logic](#representation-validation-and-other-logic)
+* [What's Included?](#whats-included)
+  * [Abstract Types](#abstract-types)
+  * [Code Generation](#code-generation)
+  * [Spring Converters](#spring-converters)
+  * [JPA Conversion](#jpa-conversion)
+  * [Spring Boot Starter](#spring-boot-starter)
+* [Troubleshooting](#troubleshooting)
+  * [Can Simple Domain Primitives be used with JPA (Hibernate/EclipseLink) @Id annotations?](#can-simple-domain-primitives-be-used-with-jpa-hibernateeclipselink-id-annotations)
 <!-- TOC -->
 
 ## What Are Domain Primitives?
@@ -143,6 +145,73 @@ public class CustomerRef extends AbstractMutableDomainPrimitive<String> {
     public CustomerRef(String value) { super(value); }
 
     // ...
+}
+```
+
+### Code Generation
+
+The `primitive4j-annotation-processor` module provides (optional) code generation via annotation processing. To start, 
+add the dependency using Gradle:
+
+```kotlin
+annotationProcessor("com.github.manosbatsis.primitive4j:primitive4j-annotation-processor:1.0.10")
+```
+
+If you are using Maven, you need to add the annotation processor as a dependency in yourpom.xmlfile. You also need to 
+ensure that the Maven Compiler Plugin is configured to use the annotation processor during the compile phase:
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.github.manosbatsis.primitive4j</groupId>
+    <artifactId>primitive4j-annotation-processor</artifactId>
+    <version>1.0.10</version>
+    <scope>provided</scope>
+  </dependency>
+</dependencies>
+
+<build>
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <configuration>
+        <annotationProcessorPaths>
+          <path>
+            <groupId>com.github.manosbatsis.primitive4j</groupId>
+            <artifactId>primitive4j-annotation-processor</artifactId>
+          </path>
+        </annotationProcessorPaths>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+```
+
+You can then add `@GeneratePrimitive` annotations to generate primitives, typically on the class that makes use of them:
+
+```java
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@GeneratePrimitive(
+        name = "CustomerRef",
+        javaDoc = "A business key type dedicated to Customer entities.",
+        valueType = String.class)
+@Builder
+public class Customer {
+
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    @Valid
+    @Column(updatable = false, nullable = false, unique = true)
+    private CustomerRef ref;
+
+    private String name;
 }
 ```
 
