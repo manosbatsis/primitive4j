@@ -132,7 +132,7 @@ jreleaser {
 				sonatype {
 					active = 'RELEASE'
 					url = 'https://central.sonatype.com/api/v1/publisher'
-					subprojects.filter { it.plugins.hasPlugin("java") }.forEach { subproject ->
+					subprojects.forEach { subproject ->
 						stagingRepositories.add("${subproject.layout.buildDirectory.get()}/staging-deploy")
 					}
 				}
@@ -140,7 +140,7 @@ jreleaser {
 		}
 	}
 	distributions {
-		subprojects.filter { it.plugins.hasPlugin("java") }.forEach { subproject ->
+		subprojects.forEach { subproject ->
 			register(subproject.name) {
 				project {
 					description.set(
