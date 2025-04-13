@@ -142,13 +142,7 @@ jreleaser {
 	distributions {
 		subprojects.forEach { subproject ->
 			register(subproject.name) {
-				project {
-					description.set(
-							providers.provider {
-								subproject.description ?: rootProject.description
-							},
-					)
-				}
+				it.project.description = subproject.description ?: rootProject.description
 				artifact {
 					path.set(subproject.tasks.named<Jar>("jar").get().archiveFile.get().asFile)
 				}
