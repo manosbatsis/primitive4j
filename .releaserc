@@ -20,6 +20,5 @@ plugins:
     - assets:
         - "build.gradle"
         - "*.md"
-  - "@semantic-release/github"
 options:
   debug: true
