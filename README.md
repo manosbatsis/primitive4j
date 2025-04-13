@@ -1,12 +1,21 @@
-# Primitive4J: Simple Domain Primitives for the JVM ![Maven Central Version](https://img.shields.io/maven-central/v/com.github.manosbatsis.primitive4j/primitive4j-spring-boot-starter) [![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/gradle.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/gradle.yml)
+<h1>Primitive4J: Simple Domain Primitives for the JVM ![Maven Central Version](https://img.shields.io/maven-central/v/com.github.manosbatsis.primitive4j/primitive4j-spring-boot-starter) [![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml)</h1>
 
 Tools to help with simple domain primitives in Java applications, including:
 
-- Abstract types
-- JPA converters
-- Spring converters
-- Spring Boot starter
-- Optional annotation processing for code generation
+<!-- TOC -->
+  * [What Are Domain Primitives?](#what-are-domain-primitives)
+  * [Quick Example](#quick-example)
+  * [Benefits of Domain Primitives](#benefits-of-domain-primitives)
+    * [Type Safety](#type-safety)
+    * [Logical Dependencies Become Physical](#logical-dependencies-become-physical)
+    * [Representation, Validation and Other Logic](#representation-validation-and-other-logic)
+  * [What's Included?](#whats-included)
+    * [Abstract Types](#abstract-types)
+    * [Spring Converters](#spring-converters)
+    * [JPA Conversion](#jpa-conversion)
+  * [Troubleshooting](#troubleshooting)
+    * [Can Simple Domain Primitives be used with JPA (Hibernate/EclipseLink) @Id annotations?](#can-simple-domain-primitives-be-used-with-jpa-hibernateeclipselink-id-annotations)
+<!-- TOC -->
 
 ## What Are Domain Primitives?
 
@@ -111,7 +120,7 @@ This repo includes a number of utilities to help you with simple domain primitiv
 
 ### Abstract Types
 
-The core library comes with `DomainPrimitive`, `AbstractDomainPrimitive` and 
+The `primitive4j-core` module comes with `DomainPrimitive`, `AbstractDomainPrimitive` and 
 `AbstractMutableDomainPrimitive` which you can implement or extend i.e.:
 
 ```java
@@ -134,19 +143,6 @@ public class CustomerRef extends AbstractMutableDomainPrimitive<String> {
     public CustomerRef(String value) { super(value); }
 
     // ...
-}
-```
-
-### Jackson (De)Serialization
-
-If Jackson is present, your domain primitives will be (d)serialized back and from the simple types they wrap, 
-e.g. a `Customer` request/response body will include it's `CustomerRef` like shown bellow:
-
-```json5
-{
-  // ...
-  "ref": "CUS-001",
-  // ...
 }
 ```
 
@@ -174,6 +170,51 @@ ResponseEntity<Order> update(@RequestBody OrderDto order, @PathVariable OrderId 
     return ResponseEntity.ok(service.update(order, id));
 }
 ```
+
+### JPA Conversion
+
+If JPA is present in your classpath, generated primitives will include a JPA attribute converter. You can follow the 
+same pattern for manually created primitives:
+
+```java
+/**
+ * A business key type dedicated to Customer entities.
+ */
+@Schema(implementation = String.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc.
+public record CustomerRef(String value) implements DomainPrimitive<String> {
+
+    /**
+     * A JPA converter for {@link CustomerRef}
+     */
+    @Converter(autoApply = true)
+    public static class CustomerRefAttributeConverter
+            extends DomainPrimitiveAttributeConverter<CustomerRef, String> {
+        public CustomerRefAttributeConverter() {
+            super(CustomerRef.class, String.class);
+        }
+    }
+}
+```
+
+### Spring Boot Starter
+
+A Spring Boot starter that autoconfigures everything can be added as a dependency, e.g. with Maven:
+
+```xml
+<dependency>
+    <groupId>com.github.manosbatsis.primitive4j</groupId>
+    <artifactId>primitive4j-spring-boot-starter</artifactId>
+    <version>1.0.10</version>
+</dependency>
+```
+
+or Gradle: 
+
+```kotlin
+implementation("com.github.manosbatsis.primitive4j:primitive4j-spring-boot-starter:1.0.10")
+```
+
+
 
 ## Troubleshooting
 
