@@ -175,7 +175,6 @@ ResponseEntity<Order> update(@RequestBody OrderDto order, @PathVariable OrderId 
 }
 ```
 
-
 ## Troubleshooting
 
 ### Can Simple Domain Primitives be used with JPA (Hibernate/EclipseLink) @Id annotations?
