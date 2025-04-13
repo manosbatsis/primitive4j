@@ -19,6 +19,11 @@ java {
 	targetCompatibility = JavaVersion.VERSION_1_8
 }
 
+// no top-level jar
+tasks.named("jar") {
+	enabled = false
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -135,24 +140,6 @@ jreleaser {
 					subprojects.forEach { subproject ->
 						stagingRepositories.add("${subproject.layout.buildDirectory.get()}/staging-deploy")
 					}
-				}
-			}
-		}
-	}
-	distributions {
-		subprojects.forEach { subproject ->
-			register(subproject.name) {
-				it.project.description = subproject.description ?: rootProject.description
-				artifact {
-					path.set(subproject.tasks.named<Jar>("jar").get().archiveFile.get().asFile)
-				}
-				artifact {
-					path.set(subproject.tasks.named<Jar>("sourcesJar").get().archiveFile.get().asFile)
-					platform.set("java-sources")
-				}
-				artifact {
-					path.set(subproject.tasks.named<Jar>("javadocJar").get().archiveFile.get().asFile)
-					platform.set("java-docs")
 				}
 			}
 		}
