@@ -3,7 +3,7 @@ datafaker-version = "2.4.2"
 freefair-lombok-version = "8.12.2.1"
 jackson-databind-version = "2.17.2"
 jakarta-validation-api-version = "3.0.2"
-nexus-publish-version = "2.0.0"
+jreleaser-version = "1.17.0"
 spring-boot-version = "3.4.3"
 spotless-version = "7.0.2"
 
@@ -18,4 +18,4 @@ datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker-versi
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot-version" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless-version" }
 freefair-lombok = { id = "io.freefair.lombok", version.ref = "freefair-lombok-version" }
-nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish-version" }
+jreleaser = { id = "org.jreleaser", version.ref = "jreleaser-version" }

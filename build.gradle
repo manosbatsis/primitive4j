@@ -7,8 +7,9 @@ plugins {
 	alias(libs.plugins.spring.boot) apply(false)
 	alias(libs.plugins.spotless) apply(false)
 	alias(libs.plugins.freefair.lombok) apply(false)
-	alias(libs.plugins.nexus.publish)
+	alias(libs.plugins.jreleaser)
 }
+version = "1.0.0"
 
 java {
 	toolchain {
@@ -17,7 +18,6 @@ java {
 	sourceCompatibility = JavaVersion.VERSION_23
 	targetCompatibility = JavaVersion.VERSION_1_8
 }
-
 
 configurations {
 	compileOnly {
@@ -29,9 +29,21 @@ repositories {
 	mavenCentral()
 }
 
-nexusPublishing {
-	repositories {
-		sonatype()
+jreleaser {
+	signing {
+		active = 'RELEASE'
+		armored = true
+	}
+	deploy {
+		maven {
+			mavenCentral {
+				sonatype {
+					active = 'RELEASE'
+					url = 'https://central.sonatype.com/api/v1/publisher'
+					stagingRepository('target/staging-deploy')
+				}
+			}
+		}
 	}
 }
 
@@ -120,10 +132,4 @@ subprojects() {
 			}
 		}
 	}
-
-	signing {
-		required = { !version.endsWith("SNAPSHOT") && gradle.taskGraph.hasTask("publish") }
-		sign publishing.publications.mavenJava
-	}
-
 }
