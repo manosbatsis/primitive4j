@@ -130,6 +130,7 @@ subprojects() {
 }
 
 jreleaser {
+	dryrun.set(System.getenv("CI") == null || System.getenv("CI").isBlank())
 	signing {
 		active = 'RELEASE'
 		armored = true
@@ -146,23 +147,6 @@ jreleaser {
 					}
 					retryDelay = 60
 					maxRetries = 80
-				}
-			}
-		}
-	}
-	distributions {
-		subprojects.forEach { subproject ->
-			register(subproject.name) {
-				artifact {
-					path.set(subproject.tasks.named<Jar>("jar").get().archiveFile.get().asFile)
-				}
-				artifact {
-					path.set(subproject.tasks.named<Jar>("sourcesJar").get().archiveFile.get().asFile)
-					platform.set("java-sources")
-				}
-				artifact {
-					path.set(subproject.tasks.named<Jar>("javadocJar").get().archiveFile.get().asFile)
-					platform.set("java-docs")
 				}
 			}
 		}
