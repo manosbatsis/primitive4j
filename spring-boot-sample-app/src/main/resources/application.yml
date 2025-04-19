@@ -24,7 +24,7 @@ spring:
 logging:
   level:
     root: info
-    sql: debug
+    # sql: debug
     com:
       github:
         manosbatsis:
@@ -33,7 +33,7 @@ logging:
       hibernate:
         orm:
           jdbc:
-            bind: trace
+            # bind: trace
       springframework:
         web:
           reactive:
