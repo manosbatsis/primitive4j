@@ -1,23 +1,24 @@
 <h1>Primitive4J: Simple Domain Primitives for the JVM</h1>
-![Maven Central Version](https://img.shields.io/maven-central/v/com.github.manosbatsis.primitive4j/primitive4j-spring-boot-starter) [![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml)
+[![Maven Central Version](https://img.shields.io/maven-central/v/com.github.manosbatsis.primitive4j/primitive4j-spring-boot-starter)](https://central.sonatype.com/search?q=primitive4j)
+[![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml)
 
 Tools to help with simple domain primitives in Java applications.
 
 <!-- TOC -->
-* [What Are Domain Primitives?](#what-are-domain-primitives)
-* [Quick Example](#quick-example)
-* [Benefits of Domain Primitives](#benefits-of-domain-primitives)
-  * [Type Safety](#type-safety)
-  * [Logical Dependencies Become Physical](#logical-dependencies-become-physical)
-  * [Representation, Validation and Other Logic](#representation-validation-and-other-logic)
-* [What's Included?](#whats-included)
-  * [Abstract Types](#abstract-types)
-  * [Code Generation](#code-generation)
-  * [Spring Converters](#spring-converters)
-  * [JPA Conversion](#jpa-conversion)
-  * [Spring Boot Starter](#spring-boot-starter)
-* [Troubleshooting](#troubleshooting)
-  * [Can Simple Domain Primitives be used with JPA (Hibernate/EclipseLink) @Id annotations?](#can-simple-domain-primitives-be-used-with-jpa-hibernateeclipselink-id-annotations)
+  * [What Are Domain Primitives?](#what-are-domain-primitives)
+  * [Quick Example](#quick-example)
+  * [Benefits of Domain Primitives](#benefits-of-domain-primitives)
+    * [Type Safety](#type-safety)
+    * [Logical Dependencies Become Physical](#logical-dependencies-become-physical)
+    * [Representation, Validation and Other Logic](#representation-validation-and-other-logic)
+  * [What's Included?](#whats-included)
+    * [Abstract Types](#abstract-types)
+    * [Code Generation](#code-generation)
+    * [Spring Converters](#spring-converters)
+    * [JPA Conversion](#jpa-conversion)
+    * [Spring Boot Starter](#spring-boot-starter)
+  * [Troubleshooting](#troubleshooting)
+    * [Can Simple Domain Primitives be used with JPA (Hibernate/EclipseLink) @Id annotations?](#can-simple-domain-primitives-be-used-with-jpa-hibernateeclipselink-id-annotations)
 <!-- TOC -->
 
 ## What Are Domain Primitives?
