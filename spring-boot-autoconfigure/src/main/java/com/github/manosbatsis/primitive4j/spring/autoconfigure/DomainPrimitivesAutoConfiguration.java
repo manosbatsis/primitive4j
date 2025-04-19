@@ -14,29 +14,63 @@
  */
 package com.github.manosbatsis.primitive4j.spring.autoconfigure;
 
+import static org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication.Type.*;
+
 import com.github.manosbatsis.primitive4j.spring.FromDomainPrimitiveGenericConverter;
 import com.github.manosbatsis.primitive4j.spring.StringToDomainPrimitiveConverterFactory;
 import com.github.manosbatsis.primitive4j.spring.ToDomainPrimitiveGenericConverter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.lang.NonNull;
+import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+@AutoConfiguration
 @EnableConfigurationProperties(DomainPrimitivesProperties.class)
-public class DomainPrimitivesAutoConfiguration implements WebMvcConfigurer {
+public class DomainPrimitivesAutoConfiguration {
 
-    @Autowired
-    @Lazy
-    private ConversionService conversionService;
-
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
+    private static void setupConverters(FormatterRegistry registry, ConversionService conversionService) {
         registry.addConverter(new FromDomainPrimitiveGenericConverter());
         registry.addConverter(new ToDomainPrimitiveGenericConverter());
         registry.addConverterFactory(new StringToDomainPrimitiveConverterFactory<>(conversionService));
+    }
+
+    /**
+     * Conditional configuration enabled for servlet web apps
+     */
+    @Configuration
+    @ConditionalOnWebApplication(type = SERVLET)
+    protected static class DomainPrimitivesWebMvcConfiguration implements WebMvcConfigurer {
+
+        @Setter(onMethod = @__({@Autowired, @Lazy}))
+        private ConversionService conversionService;
+
+        @Override
+        public void addFormatters(@NonNull FormatterRegistry registry) {
+            setupConverters(registry, conversionService);
+        }
+    }
+
+    /**
+     * Conditional configuration enabled for reactive web apps
+     */
+    @Configuration
+    @ConditionalOnWebApplication(type = REACTIVE)
+    protected static class DomainPrimitivesFluxConfiguration implements WebFluxConfigurer {
+
+        @Setter(onMethod = @__({@Autowired, @Lazy}))
+        private ConversionService conversionService;
+
+        @Override
+        public void addFormatters(@NonNull FormatterRegistry registry) {
+            setupConverters(registry, conversionService);
+        }
     }
 }
