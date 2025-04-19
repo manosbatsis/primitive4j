@@ -154,7 +154,7 @@ The `primitive4j-annotation-processor` module provides (optional) code generatio
 add the dependency using Gradle:
 
 ```kotlin
-annotationProcessor("com.github.manosbatsis.primitive4j:primitive4j-annotation-processor:1.0.11")
+annotationProcessor("com.github.manosbatsis.primitive4j:primitive4j-annotation-processor:1.0.12")
 ```
 
 If you are using Maven, you need to add the annotation processor as a dependency in yourpom.xmlfile. You also need to 
@@ -165,7 +165,7 @@ ensure that the Maven Compiler Plugin is configured to use the annotation proces
   <dependency>
     <groupId>com.github.manosbatsis.primitive4j</groupId>
     <artifactId>primitive4j-annotation-processor</artifactId>
-    <version>1.0.11</version>
+    <version>1.0.12</version>
     <scope>provided</scope>
   </dependency>
 </dependencies>
@@ -273,14 +273,14 @@ A Spring Boot starter that autoconfigures everything can be added as a dependenc
 <dependency>
     <groupId>com.github.manosbatsis.primitive4j</groupId>
     <artifactId>primitive4j-spring-boot-starter</artifactId>
-    <version>1.0.11</version>
+    <version>1.0.12</version>
 </dependency>
 ```
 
 or Gradle: 
 
 ```kotlin
-implementation("com.github.manosbatsis.primitive4j:primitive4j-spring-boot-starter:1.0.11")
+implementation("com.github.manosbatsis.primitive4j:primitive4j-spring-boot-starter:1.0.12")
 ```
 
 
