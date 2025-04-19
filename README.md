@@ -86,12 +86,16 @@ This solves a number of problems, including but not limited to:
     ```java
     public void doSomething(String customerRef, String offerRef, String orderRef);
     ```
+   VS:    
+    ```java
+    public void doSomething(CustomerRef customerRef, OfferRef offerRef, OrderRef orderRef);
+    ```
 - Methods that cannot be overloaded, e.g. compare:
     ```java
     public Customer findOneCustomerByRef(String customerRef);
     public Order findOneOrderByRef(String orderRef);
     ```
-  with:
+   VS:
     ```java
 
     public Customer findOneByRef(CustomerRef customerRef);
