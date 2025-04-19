@@ -1,6 +1,7 @@
-# Primitive4J: Simple Domain Primitives for the JVM ![Maven Central Version](https://img.shields.io/maven-central/v/com.github.manosbatsis.primitive4j/primitive4j-spring-boot-starter) [![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml)
+<h1>Primitive4J: Simple Domain Primitives for the JVM</h1>
+![Maven Central Version](https://img.shields.io/maven-central/v/com.github.manosbatsis.primitive4j/primitive4j-spring-boot-starter) [![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml)
 
-Tools to help with simple domain primitives in Java applications, including:
+Tools to help with simple domain primitives in Java applications.
 
 <!-- TOC -->
 * [What Are Domain Primitives?](#what-are-domain-primitives)
