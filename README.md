@@ -219,14 +219,14 @@ public class Customer {
 
 The `primitive4j-spring` and `primitive4j-spring-boot-starter` modules include and autoconfigure Spring 
 conversion service components for your simple domain primitives. Between other things, this completes automated 
-conversions for controller methods, for example:
+conversions for controller methods. For example, consider the :
 
 ```
-POST https://foobar/api/orders/1f4250b3-2763-416b-a466-ff4950ba15a7
+PUT https://foobar/api/customers/1f4250b3-2763-416b-a466-ff4950ba15a7
 
 {
-  "customerRef": "CUS-001",
-  "packagedWeight": 1200,
+  "packagedWeight": 1200
+  // ...
 }
 
 ```
@@ -234,9 +234,11 @@ POST https://foobar/api/orders/1f4250b3-2763-416b-a466-ff4950ba15a7
 may be handled like:
 
 ```java
-@PutMapping("{id}")
-ResponseEntity<Order> update(@RequestBody OrderDto order, @PathVariable OrderId id) {
-    return ResponseEntity.ok(service.update(order, id));
+@PutMapping("{ref}")
+ResponseEntity<CustomerResponse> updateByRef(
+                @Valid @RequestBody CustomerUpdateRequest request, 
+                @PathVariable CustomerRef ref) {
+    // ...
 }
 ```
 
