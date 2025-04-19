@@ -1,4 +1,5 @@
 <h1>Primitive4J: Simple Domain Primitives for the JVM</h1>
+
 [![Maven Central Version](https://img.shields.io/maven-central/v/com.github.manosbatsis.primitive4j/primitive4j-spring-boot-starter)](https://central.sonatype.com/search?q=primitive4j)
 [![CI](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml/badge.svg)](https://github.com/manosbatsis/primitive4j/actions/workflows/ci.yml)
 
