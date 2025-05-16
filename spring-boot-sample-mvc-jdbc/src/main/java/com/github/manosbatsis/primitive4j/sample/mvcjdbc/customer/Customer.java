@@ -30,12 +30,9 @@ import org.springframework.data.annotation.Id;
         valueType = String.class)
 @Builder
 public class Customer {
-
     @Id
     private UUID id;
-
     @Valid
     private CustomerRef ref;
-
     private String name;
 }

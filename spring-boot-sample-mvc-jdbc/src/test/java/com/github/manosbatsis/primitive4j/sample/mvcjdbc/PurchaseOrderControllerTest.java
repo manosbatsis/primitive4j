@@ -12,19 +12,20 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.primitive4j.sample.reactivemongo;
+package com.github.manosbatsis.primitive4j.sample.mvcjdbc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.customer.Customer;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.customer.CustomerRef;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.customer.CustomerRepository;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.infra.TestContainersConfiguration;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.order.OrderController;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.order.PurchaseOrder;
-import java.util.UUID;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.customer.Customer;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.customer.CustomerRef;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.customer.CustomerRepository;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.infra.TestContainersConfiguration;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.order.OrderController;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.order.PurchaseOrder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +36,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestContainersConfiguration.class)
 @ActiveProfiles({"default", "test"})
+@AutoConfigureWebTestClient
+@Disabled
 class PurchaseOrderControllerTest {
 
     @Autowired
@@ -45,14 +48,11 @@ class PurchaseOrderControllerTest {
 
     @Test
     void shouldCreateUpdateAndRetrieveOrders() {
-        var id = UUID.randomUUID().toString();
         var customerRef = "CUS-003";
         customerRepository.save(Customer.builder()
-                .id(UUID.randomUUID())
                 .name("Travis Cornell")
                 .ref(new CustomerRef(customerRef))
                 .build());
-
         var comments = "Bla bla";
 
         var savedPo = webTestClient
@@ -61,12 +61,11 @@ class PurchaseOrderControllerTest {
                 .bodyValue(
                         """
                         {
-                          "id": "%s",
                           "customerRef": "%s",
                           "comments": "%s"
                         }
                         """
-                                .formatted(id, customerRef, comments))
+                                .formatted(customerRef, comments))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()

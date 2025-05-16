@@ -19,7 +19,9 @@ import com.github.manosbatsis.primitive4j.test.common.example.network.*;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface SampleEntityRepository extends CrudRepository<SampleEntity, UUID> {
 
     // Network

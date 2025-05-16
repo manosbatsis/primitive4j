@@ -19,6 +19,7 @@ import com.github.manosbatsis.primitive4j.test.common.example.network.*;
 import java.util.UUID;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Embedded;
 
 @Getter
 @Setter
@@ -31,6 +32,7 @@ public class SampleEntity {
     private UUID id;
 
     // Network value types
+    @Embedded(onEmpty = Embedded.OnEmpty.USE_NULL)
     private UriBean uriBean;
 
     private UriRecord uriRecord;

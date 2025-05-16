@@ -16,12 +16,10 @@ package com.github.manosbatsis.primitive4j.sample.mvcjdbc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.github.manosbatsis.primitive4j")
-@EntityScan(basePackages = "com.github.manosbatsis.primitive4j")
+@EnableJdbcRepositories
 public class SampleApplication {
 
     public static void main(String[] args) {

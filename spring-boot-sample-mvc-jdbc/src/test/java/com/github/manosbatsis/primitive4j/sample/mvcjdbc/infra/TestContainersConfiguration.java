@@ -12,15 +12,21 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.primitive4j.sample.mvcjdbc.customer;
+package com.github.manosbatsis.primitive4j.sample.mvcjdbc.infra;
 
-import java.util.Optional;
-import java.util.UUID;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.context.annotation.Bean;
+import org.testcontainers.containers.PostgreSQLContainer;
 
-@Repository
-public interface CustomerRepository extends CrudRepository<Customer, UUID> {
+@TestConfiguration(proxyBeanMethods = false)
+public class TestContainersConfiguration {
 
-    Optional<Customer> findOneByRef(CustomerRef ref);
+    @Bean
+    @ServiceConnection
+    public PostgreSQLContainer<?> mongoDBContainer() {
+        var container = new PostgreSQLContainer<>("postgres:latest");
+        container.start();
+        return container;
+    }
 }

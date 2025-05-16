@@ -12,14 +12,14 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.primitive4j.sample.reactivemongo;
+package com.github.manosbatsis.primitive4j.sample.mvcjdbc;
 
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.customer.CustomerController;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.infra.TestContainersConfiguration;
-import java.util.UUID;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.customer.CustomerController;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.infra.TestContainersConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -31,12 +31,14 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @ActiveProfiles({"default", "test"})
 class CustomerControllerTest {
 
+    @LocalServerPort
+    private String serverPort;
+
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
     void shouldCreateUpdateAndRetrieveCustomers() {
-        String customerId = UUID.randomUUID().toString();
         String customerRef = "CUS-001";
         String customerName = "Travis Cornell";
         webTestClient
@@ -45,19 +47,16 @@ class CustomerControllerTest {
                 .bodyValue(
                         """
                         {
-                          "id": "%s",
                           "name": "%s",
                           "ref": "%s"
                         }
                         """
-                                .formatted(customerId, customerName, customerRef))
+                                .formatted(customerName, customerRef))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()
                 .isCreated()
                 .expectBody()
-                .jsonPath("id")
-                .isEqualTo(customerId)
                 .jsonPath("name")
                 .isEqualTo(customerName)
                 .jsonPath("ref")

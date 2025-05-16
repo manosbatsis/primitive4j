@@ -230,15 +230,16 @@ public final class DomainPrimitiveAnnotationProcessor extends AbstractProcessor 
     }
 
     private static String getGeneratedTypeAnnotations(DomainPrimitiveContext annotationContext) {
-        StringBuilder sb = new StringBuilder("%n@Generated(%n    value=\"%s\", %n    date=\"%s\", %n    comments=\"%s\")"
-                .formatted(
-                        DomainPrimitiveAnnotationProcessor.class.getCanonicalName(),
-                        ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT),
-                        "Annotated element: %s"
-                                .formatted(annotationContext
-                                        .annotatedTypeElement
-                                        .getQualifiedName()
-                                        .toString())));
+        StringBuilder sb =
+                new StringBuilder("%n@Generated(%n    value=\"%s\", %n    date=\"%s\", %n    comments=\"%s\")"
+                        .formatted(
+                                DomainPrimitiveAnnotationProcessor.class.getCanonicalName(),
+                                ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT),
+                                "Annotated element: %s"
+                                        .formatted(annotationContext
+                                                .annotatedTypeElement
+                                                .getQualifiedName()
+                                                .toString())));
         if (annotationContext.generateOpenApi) {
             sb.append("%n@Schema(implementation = %s.class) // Useful for OpenAPI tools like Swagger, SpringDoc etc."
                     .formatted(annotationContext.valueTypeSimpleName));

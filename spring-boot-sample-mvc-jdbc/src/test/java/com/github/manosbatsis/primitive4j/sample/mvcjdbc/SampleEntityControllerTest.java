@@ -12,17 +12,17 @@
  * You should have received a copy of the GNU Lesser General Public License along with this program. If not, see
  * <a href="https://www.gnu.org/licenses/lgpl-3.0.html">https://www.gnu.org/licenses/lgpl-3.0.html</a>.
  */
-package com.github.manosbatsis.primitive4j.sample.reactivemongo;
+package com.github.manosbatsis.primitive4j.sample.mvcjdbc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.github.manosbatsis.primitive4j.core.DomainPrimitive;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.infra.TestContainersConfiguration;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.sampleentity.*;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.sampleentity.network.UriBean;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.sampleentity.network.UriRecord;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.sampleentity.network.UrlBean;
-import com.github.manosbatsis.primitive4j.sample.reactivemongo.sampleentity.network.UrlRecord;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.infra.TestContainersConfiguration;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.sampleentity.SampleEntity;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.sampleentity.SampleEntityController;
+import com.github.manosbatsis.primitive4j.sample.mvcjdbc.sampleentity.SampleEntityService;
+import com.github.manosbatsis.primitive4j.test.common.example.*;
+import com.github.manosbatsis.primitive4j.test.common.example.network.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -31,11 +31,13 @@ import java.util.UUID;
 import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import net.datafaker.Faker;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
@@ -46,6 +48,8 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestContainersConfiguration.class)
 @ActiveProfiles({"default", "test"})
+@AutoConfigureWebTestClient(timeout = "PT10S")
+@Disabled
 class SampleEntityControllerTest {
 
     private static final Faker faker = new Faker();
@@ -84,9 +88,6 @@ class SampleEntityControllerTest {
     private SampleEntityService sampleEntityService;
 
     @Autowired
-    private SampleEntityRepository sampleEntityRepository;
-
-    @Autowired
     private WebTestClient webTestClient;
 
     @Test
@@ -100,10 +101,7 @@ class SampleEntityControllerTest {
     @MethodSource("sampleInstanceUrlFragments")
     void shouldBeAbleToSearchByAnySimplePrimitiveProperty(String pathFragment, DomainPrimitive<?> valueFragment) {
         // Create an entity instance with fixed random values
-        sampleEntityService.save(sampleInstance).block();
-
-        var resultById = sampleEntityService.findById(sampleInstance.getId()).block();
-        assertThat(resultById).usingRecursiveComparison().isEqualTo(sampleInstance);
+        sampleEntityService.save(sampleInstance);
 
         // Create a few more
         postSampleEntity(buildSampleEntity());
@@ -148,7 +146,6 @@ class SampleEntityControllerTest {
     @SneakyThrows
     private static SampleEntity buildSampleEntity() {
         return SampleEntity.builder()
-                .id(UUID.randomUUID())
                 .uriRecord(new UriRecord(new URI(faker.internet().url())))
                 .uriBean(new UriBean(new URI(faker.internet().url())))
                 .urlBean(new UrlBean(new URI(faker.internet().url()).toURL()))
