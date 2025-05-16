@@ -56,6 +56,14 @@ public @interface GeneratePrimitive {
     FeatureMode jpaMode() default FeatureMode.AUTO;
 
     /**
+     * Whether to generate a Spring Data converters for this domain primitive. Default is AUTO, in which case a
+     * converter will be generated if the annotated element is also annotated with a <code>
+     * jakarta.persistence</code> annotation, e.g. <code>Entity</code>, <code>MappedSuperclass</code>
+     * or <code>Embeddable</code>.
+     */
+    FeatureMode springDataMode() default FeatureMode.AUTO;
+
+    /**
      * Whether to add Jackson-related annotations for JSON (de)serialization to this domain primitive
      * if/where needed. Default is AUTO, in which case annotation will be added if they are included
      * in the classpath.

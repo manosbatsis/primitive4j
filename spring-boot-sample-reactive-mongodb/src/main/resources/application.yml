@@ -1,0 +1,27 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/primitive4j-mongodb
+      database: primitive4j-mongodb
+logging:
+  level:
+    root: WARN
+---
+spring:
+  config:
+    activate:
+      on-profile: "test"
+logging:
+  level:
+    root: info
+    # sql: debug
+    com:
+      github:
+        manosbatsis:
+          domainprimitives: debug
+      springframework:
+        web:
+          reactive:
+            function:
+              client:
+                ExchangeFunctions: trace

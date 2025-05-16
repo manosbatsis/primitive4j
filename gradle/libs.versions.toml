@@ -6,8 +6,10 @@ jakarta-validation-api-version = "3.0.2"
 jreleaser-version = "1.17.0"
 spring-boot-version = "3.4.3"
 spotless-version = "7.0.2"
+flapdoodle-mongo-version = "4.20.0"
 
 [libraries]
+flapdoodle-mongo = { module = "de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring3x", version.ref = "flapdoodle-mongo-version" }
 jakarta-validation-api = { module = "jakarta.validation:jakarta.validation-api", version.ref = "jakarta-validation-api-version" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson-databind-version" }
 datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker-version" }

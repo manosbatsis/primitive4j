@@ -132,6 +132,11 @@ public final class DomainPrimitiveAnnotationProcessor extends AbstractProcessor 
             classDecl.append(getGeneratedJpaAttributeConverter(
                     annotationContext.generatedClassSimpleName, annotationContext.valueTypeSimpleName));
         }
+
+        if (annotationContext.generateSpringData) {
+            classDecl.append(getGeneratedSpringDataConverters(
+                    annotationContext.generatedClassSimpleName, annotationContext.valueTypeSimpleName));
+        }
         classDecl.append(classDeclEnd);
 
         try {
@@ -154,13 +159,12 @@ public final class DomainPrimitiveAnnotationProcessor extends AbstractProcessor 
 
     private DomainPrimitiveContext buildAnnotationContext(
             TypeElement annotatedTypeElement, GeneratePrimitive annotation) {
-        var jpaMode = annotation.jpaMode();
-        boolean hasJpaAnnotation = !annotatedTypeElement.getAnnotationMirrors().stream()
-                .filter(annotationMirror ->
-                        annotationMirror.getAnnotationType().toString().startsWith("jakarta.persistence"))
-                .toList()
-                .isEmpty();
-        var generateJpa = jpaMode.equals(FeatureMode.ACTIVE) || (jpaMode.equals(FeatureMode.AUTO) && hasJpaAnnotation);
+        boolean hasSpringDataAnnotation = hasSpringDataAnnotation(annotatedTypeElement);
+        var generateSpringData = annotation.springDataMode().equals(FeatureMode.ACTIVE)
+                || (annotation.springDataMode().equals(FeatureMode.AUTO) && hasSpringDataAnnotation);
+        boolean hasJpaAnnotation = hasJpaAnnotation(annotatedTypeElement);
+        var generateJpa = annotation.jpaMode().equals(FeatureMode.ACTIVE)
+                || (annotation.jpaMode().equals(FeatureMode.AUTO) && hasJpaAnnotation);
         var jacksonMode = annotation.jacksonMode();
         var isJacksonPresent = classExists("com.fasterxml.jackson.annotation.JsonCreator");
         var generateJackson =
@@ -175,6 +179,7 @@ public final class DomainPrimitiveAnnotationProcessor extends AbstractProcessor 
         var valueClassName = getValueType(annotation);
         var extendClassName = getExtendedClass(annotation);
         return DomainPrimitiveContext.builder()
+                .generateSpringData(generateSpringData)
                 .generateJpa(generateJpa)
                 .generateJackson(generateJackson)
                 .generateOpenApi(generateOpenApi)
@@ -192,6 +197,25 @@ public final class DomainPrimitiveAnnotationProcessor extends AbstractProcessor 
                         .getKind()
                         .isInterface())
                 .build();
+    }
+
+    private static boolean hasSpringDataAnnotation(TypeElement annotatedTypeElement) {
+        return annotatedTypeElement.getAnnotationMirrors().stream()
+                        .anyMatch(annotationMirror ->
+                                annotationMirror.getAnnotationType().toString().startsWith("org.springframework.data"))
+                || annotatedTypeElement.getEnclosedElements().stream()
+                        .anyMatch(enclosedElem -> ElementKind.FIELD == enclosedElem.getKind()
+                                && enclosedElem.getAnnotationMirrors().stream()
+                                        .anyMatch(annotationMirror -> annotationMirror
+                                                .getAnnotationType()
+                                                .toString()
+                                                .startsWith("org.springframework.data")));
+    }
+
+    private static boolean hasJpaAnnotation(TypeElement annotatedTypeElement) {
+        return annotatedTypeElement.getAnnotationMirrors().stream()
+                .anyMatch(annotationMirror ->
+                        annotationMirror.getAnnotationType().toString().startsWith("jakarta.persistence"));
     }
 
     private static String getGeneratedTypeJavaDoc(GeneratePrimitive annotation) {
@@ -225,9 +249,7 @@ public final class DomainPrimitiveAnnotationProcessor extends AbstractProcessor 
     private String getGeneratedJpaAttributeConverter(String generatedClassName, String valueTypeSimpleName) {
         var template =
                 """
-                    /**
-                     * A JPA converter for {@link %s}
-                     */
+                    /** A JPA converter for {@link %s} */
                     @Converter(autoApply = true)
                     public static class %sAttributeConverter
                             extends DomainPrimitiveAttributeConverter<%s, %s> {
@@ -244,6 +266,49 @@ public final class DomainPrimitiveAnnotationProcessor extends AbstractProcessor 
                 generatedClassName,
                 generatedClassName,
                 valueTypeSimpleName));
+    }
+
+    private String getGeneratedSpringDataConverters(String generatedClassName, String valueTypeSimpleName) {
+        var templateReadingConverter =
+                """
+                    /** A Spring Data reading converter for {@link %s} */
+                    @ReadingConverter
+                    public class %sTo%sConverter implements Converter<%s, %s> {
+                        @Override
+                        public %s convert(%s source) {
+                            return new %s(source);
+                        }
+                    }
+                """
+                        .formatted(
+                                generatedClassName,
+                                valueTypeSimpleName,
+                                generatedClassName,
+                                valueTypeSimpleName,
+                                generatedClassName,
+                                generatedClassName,
+                                valueTypeSimpleName,
+                                generatedClassName);
+        var templateWritingConverter =
+                """
+                    /** A Spring Data writing converter for {@link %s} */
+                    @WritingConverter
+                    public class %sTo%sConverter implements Converter<%s, %s> {
+                        @Override
+                        public %s convert(%s source) {
+                            return source.value();
+                        }
+                    }
+                """
+                        .formatted(
+                                valueTypeSimpleName,
+                                generatedClassName,
+                                valueTypeSimpleName,
+                                generatedClassName,
+                                valueTypeSimpleName,
+                                valueTypeSimpleName,
+                                generatedClassName);
+        return removeTrailingNewLines(templateReadingConverter + "\n" + templateWritingConverter);
     }
 
     private String removeTrailingNewLines(String value) {
@@ -287,10 +352,18 @@ public final class DomainPrimitiveAnnotationProcessor extends AbstractProcessor 
         if (!domainPrimitiveContext.extendClassIsInterface && domainPrimitiveContext.generateJackson) {
             importsHelper.addImport("com.fasterxml.jackson.annotation.JsonCreator");
         }
+        // Import JPA attribute converter if needed
         if (domainPrimitiveContext.generateJpa) {
             importsHelper
                     .addImport("com.github.manosbatsis.primitive4j.jpa.DomainPrimitiveAttributeConverter")
                     .addImport("jakarta.persistence.Converter");
+        }
+        // Import Spring (Data) converter if needed
+        if (domainPrimitiveContext.generateSpringData) {
+            importsHelper
+                    .addImport("org.springframework.core.convert.converter.Converter")
+                    .addImport("org.springframework.data.convert.ReadingConverter")
+                    .addImport("org.springframework.data.convert.WritingConverter");
         }
         return importsHelper;
     }

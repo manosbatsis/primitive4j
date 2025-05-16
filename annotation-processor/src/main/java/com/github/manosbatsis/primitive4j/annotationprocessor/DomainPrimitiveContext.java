@@ -32,6 +32,7 @@ class DomainPrimitiveContext {
     String extendClassName;
     String extendClassSimpleName;
     boolean extendClassIsInterface;
+    boolean generateSpringData;
     boolean generateJpa;
     boolean generateJackson;
     boolean generateOpenApi;

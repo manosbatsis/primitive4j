@@ -9,7 +9,9 @@ include("annotation-processor",
         "spring",
         "spring-boot-autoconfigure",
         "spring-boot-starter",
-        "spring-boot-sample-app",
+        "spring-boot-sample-mvc-jpa",
+        "spring-boot-sample-mvc-jdbc",
+        "spring-boot-sample-reactive-mongodb",
         "test-common")
 
 prefix('primitive4j')
