@@ -230,7 +230,7 @@ public final class DomainPrimitiveAnnotationProcessor extends AbstractProcessor 
     }
 
     private static String getGeneratedTypeAnnotations(DomainPrimitiveContext annotationContext) {
-        StringBuilder sb = new StringBuilder("@Generated(%n    value=\"%s\", %n    date=\"%s\", %n    comments=\"%s\")"
+        StringBuilder sb = new StringBuilder("%n@Generated(%n    value=\"%s\", %n    date=\"%s\", %n    comments=\"%s\")"
                 .formatted(
                         DomainPrimitiveAnnotationProcessor.class.getCanonicalName(),
                         ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT),
