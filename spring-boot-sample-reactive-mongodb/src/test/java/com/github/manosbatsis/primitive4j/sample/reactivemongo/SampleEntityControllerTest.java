@@ -84,6 +84,9 @@ class SampleEntityControllerTest {
     private SampleEntityService sampleEntityService;
 
     @Autowired
+    private SampleEntityRepository sampleEntityRepository;
+
+    @Autowired
     private WebTestClient webTestClient;
 
     @Test
@@ -97,7 +100,10 @@ class SampleEntityControllerTest {
     @MethodSource("sampleInstanceUrlFragments")
     void shouldBeAbleToSearchByAnySimplePrimitiveProperty(String pathFragment, DomainPrimitive<?> valueFragment) {
         // Create an entity instance with fixed random values
-        sampleEntityService.save(sampleInstance);
+        sampleEntityService.save(sampleInstance).block();
+
+        var resultById = sampleEntityService.findById(sampleInstance.getId()).block();
+        assertThat(resultById).usingRecursiveComparison().isEqualTo(sampleInstance);
 
         // Create a few more
         postSampleEntity(buildSampleEntity());
@@ -142,6 +148,7 @@ class SampleEntityControllerTest {
     @SneakyThrows
     private static SampleEntity buildSampleEntity() {
         return SampleEntity.builder()
+                .id(UUID.randomUUID())
                 .uriRecord(new UriRecord(new URI(faker.internet().url())))
                 .uriBean(new UriBean(new URI(faker.internet().url())))
                 .urlBean(new UrlBean(new URI(faker.internet().url()).toURL()))

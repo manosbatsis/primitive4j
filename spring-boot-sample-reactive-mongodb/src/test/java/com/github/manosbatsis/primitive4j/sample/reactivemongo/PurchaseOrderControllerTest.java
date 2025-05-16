@@ -22,6 +22,7 @@ import com.github.manosbatsis.primitive4j.sample.reactivemongo.customer.Customer
 import com.github.manosbatsis.primitive4j.sample.reactivemongo.infra.TestContainersConfiguration;
 import com.github.manosbatsis.primitive4j.sample.reactivemongo.order.OrderController;
 import com.github.manosbatsis.primitive4j.sample.reactivemongo.order.PurchaseOrder;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,11 +45,14 @@ class PurchaseOrderControllerTest {
 
     @Test
     void shouldCreateUpdateAndRetrieveOrders() {
+        var id = UUID.randomUUID().toString();
         var customerRef = "CUS-003";
         customerRepository.save(Customer.builder()
+                .id(UUID.randomUUID())
                 .name("Travis Cornell")
                 .ref(new CustomerRef(customerRef))
                 .build());
+
         var comments = "Bla bla";
 
         var savedPo = webTestClient
@@ -57,11 +61,12 @@ class PurchaseOrderControllerTest {
                 .bodyValue(
                         """
                         {
+                          "id": "%s",
                           "customerRef": "%s",
                           "comments": "%s"
                         }
                         """
-                                .formatted(customerRef, comments))
+                                .formatted(id, customerRef, comments))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .exchange()
                 .expectStatus()

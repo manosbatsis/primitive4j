@@ -17,6 +17,7 @@ package com.github.manosbatsis.primitive4j.sample.reactivemongo.order;
 import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -34,6 +35,7 @@ public class OrderController {
         return repository.findById(id);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     Mono<PurchaseOrder> save(@Valid @RequestBody PurchaseOrder entity) {
         return repository.save(entity);

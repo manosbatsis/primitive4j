@@ -63,18 +63,17 @@ class CustomerControllerTest {
                 .jsonPath("ref")
                 .isEqualTo(customerRef);
 
-               webTestClient
-                       .get()
-                       .uri(uriBuilder ->
-                               uriBuilder.path(CustomerController.BASE_PATH + "/{ref}").build(customerRef))
-                       .exchange()
-                       .expectStatus()
-                       .isOk()
-                       .expectBody()
-                       .jsonPath("name")
-                       .isEqualTo(customerName)
-                       .jsonPath("ref")
-                       .isEqualTo(customerRef);
-
+        webTestClient
+                .get()
+                .uri(uriBuilder ->
+                        uriBuilder.path(CustomerController.BASE_PATH + "/{ref}").build(customerRef))
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .expectBody()
+                .jsonPath("name")
+                .isEqualTo(customerName)
+                .jsonPath("ref")
+                .isEqualTo(customerRef);
     }
 }

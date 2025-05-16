@@ -20,6 +20,7 @@ import com.github.manosbatsis.primitive4j.sample.reactivemongo.sampleentity.netw
 import com.github.manosbatsis.primitive4j.sample.reactivemongo.sampleentity.network.UrlRecord;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,6 +36,7 @@ public class SampleEntityController {
 
     private final SampleEntityService service;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     Mono<SampleEntity> save(@Valid @RequestBody SampleEntity request) {
         return service.save(request);
